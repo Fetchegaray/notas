@@ -1,0 +1,1493 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Costa patagónica · 27/09 al 10/10</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,650;12..96,800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --golfo:#0d4a57; --golfo-2:#16707f; --meseta:#b9894a; --meseta-soft:#f1e3cc;
+  --espuma:#eef3f1; --papel:#ffffff; --ballena:#1f2a33; --gris:#5d6b73; --linea:#d5dfdc;
+  --coiron:#6f7f45; --alerta:#9a4b1c; --alerta-bg:#fbeee3;
+  --bg:var(--espuma); --card:var(--papel); --text:var(--ballena); --muted:var(--gris);
+  --accent:var(--golfo); --accent-2:var(--golfo-2); --sand:var(--meseta); --sand-soft:var(--meseta-soft); --rule:var(--linea);
+  --warn:var(--alerta); --warn-bg:var(--alerta-bg); --ok:var(--coiron);
+  --font:"Bricolage Grotesque", "Segoe UI", Roboto, system-ui, -apple-system, sans-serif;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0f1a1f; --card:#17252b; --text:#e6eeec; --muted:#9fb0b3; --accent:#6cc3cf; --accent-2:#8fd6df;
+    --sand:#d8ad6e; --sand-soft:#2e2619; --rule:#2a3a40; --warn:#f0a36f; --warn-bg:#35231a; --ok:#a9bb73;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0f1a1f; --card:#17252b; --text:#e6eeec; --muted:#9fb0b3; --accent:#6cc3cf; --accent-2:#8fd6df;
+  --sand:#d8ad6e; --sand-soft:#2e2619; --rule:#2a3a40; --warn:#f0a36f; --warn-bg:#35231a; --ok:#a9bb73;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--text);font-family:var(--font);font-size:16px;line-height:1.5;padding-bottom:calc(74px + env(safe-area-inset-bottom))}
+a{color:var(--accent)}
+button{font-family:inherit}
+:focus-visible{outline:3px solid var(--sand);outline-offset:2px;border-radius:6px}
+.wrap{max-width:720px;margin:0 auto;padding:0 16px}
+
+.hero{background:var(--accent);color:#fff;padding:22px 0 18px;position:relative;overflow:hidden}
+:root[data-theme="dark"] .hero{background:#0b3a44}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .hero{background:#0b3a44}}
+.hero h1{font-size:clamp(1.7rem,7vw,2.6rem);line-height:1;margin:0 0 5px;font-weight:800;letter-spacing:-.02em;font-variation-settings:"opsz" 96}
+.hero p.sub{margin:0;opacity:.85;font-size:.95rem}
+.status{margin-top:14px;background:rgba(255,255,255,.12);border-radius:12px;padding:10px 14px;font-size:.96rem}
+.status strong{font-weight:650}
+.theme-toggle{position:absolute;top:12px;right:12px;background:rgba(255,255,255,.14);border:0;color:#fff;border-radius:999px;padding:6px 12px;font-size:.82rem;cursor:pointer}
+
+section.view{display:none;padding:18px 0 12px}
+section.view.active{display:block}
+h2{font-size:1.45rem;margin:4px 0 10px;font-weight:800;letter-spacing:-.01em}
+h3{margin:0;font-weight:650}
+.lead{color:var(--muted);margin:-2px 0 16px;font-size:.95rem}
+.small{font-size:.82rem;color:var(--muted)}
+
+/* Panel en vivo */
+.gps{background:var(--card);border:1px solid var(--rule);border-radius:16px;padding:16px;margin-bottom:12px}
+.gps.on{border-color:var(--accent);box-shadow:0 0 0 2px var(--accent)}
+.gps .rot{font-size:.8rem;color:var(--muted);margin:0 0 2px}
+.gps .pos{font-size:1.7rem;font-weight:800;letter-spacing:-.02em;line-height:1.1;margin:0}
+.gps .ent{margin:6px 0 0;color:var(--muted);font-size:.95rem}
+.gps .vel{display:inline-block;margin-top:8px;background:var(--sand-soft);border-radius:999px;padding:3px 10px;font-size:.85rem;font-weight:600}
+.btn{display:inline-block;border:0;background:var(--accent);color:var(--card);border-radius:999px;padding:11px 18px;font-size:.95rem;font-weight:650;cursor:pointer}
+.btn.sec{background:transparent;color:var(--accent);border:1px solid var(--rule)}
+.cerca{list-style:none;margin:0;padding:0}
+.cerca li{display:grid;grid-template-columns:30px 1fr auto;gap:10px;align-items:center;padding:11px 0;border-bottom:1px solid var(--rule)}
+.cerca li:last-child{border-bottom:0}
+.cerca .ic{font-size:1.15rem;text-align:center}
+.cerca .nm{font-weight:600;line-height:1.2}
+.cerca .sb{display:block;color:var(--muted);font-size:.85rem}
+.cerca .km{font-weight:800;font-size:1.05rem;white-space:nowrap}
+.mform{display:grid;grid-template-columns:1fr 92px;gap:8px}
+.mform select,.mform input{font-family:inherit;font-size:1rem;padding:10px 11px;border:1px solid var(--rule);
+  border-radius:10px;background:var(--bg);color:var(--text);width:100%}
+.dirs{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px}
+.dirb{font-size:.9rem;padding:9px 8px;border:1px solid var(--rule);border-radius:10px;
+  background:var(--bg);color:var(--text);cursor:pointer}
+.dirb.act{background:var(--accent);border-color:var(--accent);color:var(--card);font-weight:650}
+.panel{background:var(--card);border:1px solid var(--rule);border-radius:14px;padding:14px;margin-bottom:12px}
+.panel>h3{font-size:1.02rem;margin-bottom:8px}
+
+/* Clima */
+.clima{display:grid;gap:8px}
+.clima .c{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:start;background:var(--sand-soft);border-radius:11px;padding:10px 12px}
+.clima .lg{font-weight:650;font-size:.95rem}
+.clima .ds{color:var(--muted);font-size:.88rem;display:block}
+.clima .tp{font-weight:800;font-size:1.15rem;white-space:nowrap;text-align:right}
+.clima .tp small{display:block;font-weight:500;font-size:.78rem;color:var(--muted)}
+.pend{color:var(--muted);font-size:.9rem;margin:0}
+
+/* Marea */
+.marea .ahora{font-size:1.9rem;font-weight:800;letter-spacing:-.02em;line-height:1}
+.marea .ahora span{font-size:.95rem;font-weight:600;color:var(--muted);letter-spacing:0}
+.mtabla{list-style:none;margin:10px 0 0;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(70px,1fr));gap:5px}
+.mtabla li{background:var(--sand-soft);border-radius:9px;padding:7px 8px;text-align:center}
+.mtabla .tt{font-size:.72rem;color:var(--muted);display:block}
+.mtabla .hh{font-weight:700;font-size:.98rem;display:block}
+.mtabla .mm{font-size:.82rem;color:var(--muted)}
+.mtabla li.alta{background:var(--accent);color:var(--card)}
+.mtabla li.alta .tt,.mtabla li.alta .mm{color:rgba(255,255,255,.8)}
+
+/* Días */
+.day{background:var(--card);border:1px solid var(--rule);border-radius:14px;margin-bottom:12px;overflow:hidden}
+.day.today{border-color:var(--sand);box-shadow:0 0 0 2px var(--sand)}
+.day>button{all:unset;box-sizing:border-box;display:grid;grid-template-columns:56px 1fr 22px;gap:12px;align-items:center;width:100%;padding:14px;cursor:pointer}
+.day>button:focus-visible{outline:3px solid var(--sand);outline-offset:-3px}
+.datebox{text-align:center;border-right:1px solid var(--rule);padding-right:10px}
+.datebox .dw{font-size:.74rem;color:var(--muted);display:block}
+.datebox .dn{font-size:1.55rem;font-weight:800;line-height:1;display:block}
+.datebox .dm{font-size:.74rem;color:var(--muted);display:block}
+.day h3{font-size:1.05rem;line-height:1.25}
+.day .meta{font-size:.84rem;color:var(--muted);margin-top:2px}
+.day .meta.wx{color:var(--accent);font-weight:600;display:block}
+.chev{transition:transform .2s;color:var(--muted)}
+.day.open .chev{transform:rotate(180deg)}
+.day .body{display:none;padding:0 14px 16px}
+.day.open .body{display:block}
+.drive{display:flex;flex-wrap:wrap;gap:6px 14px;background:var(--sand-soft);border-radius:10px;padding:10px 12px;font-size:.9rem;margin-bottom:12px}
+.drive b{font-weight:650}
+.acts{list-style:none;margin:0 0 10px;padding:0}
+.acts li{display:grid;grid-template-columns:26px 1fr;gap:8px;padding:9px 0;border-bottom:1px dashed var(--rule)}
+.acts li:last-child{border-bottom:0}
+.acts input{width:20px;height:20px;margin:2px 0 0;accent-color:var(--accent)}
+.acts label{cursor:pointer}
+.acts .t{font-weight:600}
+.acts .d{display:block;color:var(--muted);font-size:.92rem}
+.acts li.done .t{text-decoration:line-through;opacity:.6}
+.tip{background:var(--warn-bg);color:var(--text);border-left:4px solid var(--warn);border-radius:8px;padding:10px 12px;font-size:.92rem;margin:10px 0 0}
+.tip.alt{background:var(--sand-soft);border-left-color:var(--sand)}
+.links{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.chip{display:inline-flex;align-items:center;gap:6px;text-decoration:none;border:1px solid var(--rule);background:var(--bg);color:var(--accent);border-radius:999px;padding:6px 12px;font-size:.88rem;font-weight:600}
+.minipron{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.minipron span{background:var(--bg);border:1px solid var(--rule);border-radius:999px;padding:4px 11px;font-size:.84rem}
+.datosbox{background:var(--card);border:1px solid var(--rule);border-radius:14px;padding:13px 14px;margin:14px 0}
+.datosbox h3{font-size:1rem;margin-bottom:6px}
+.datosbox .small{margin:0 0 10px}
+.datosbox .res{margin:10px 0 0;font-size:.88rem;font-weight:600;color:var(--ok)}
+.datosbox .res.mal{color:var(--warn)}
+.btn[disabled]{opacity:.55;cursor:default}
+.planbox{background:var(--card);border:1px solid var(--rule);border-radius:14px;padding:13px 14px;margin-bottom:14px}
+.planbox h3{font-size:1rem;margin-bottom:9px}
+.planbox .small{margin:9px 0 0}
+.seg2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.seg2 button{font-family:inherit;font-size:.88rem;padding:9px 6px;border:1px solid var(--rule);
+  border-radius:10px;background:var(--bg);color:var(--text);cursor:pointer;line-height:1.2}
+.seg2 button[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--card);font-weight:650}
+
+/* Segmentos */
+.seg{display:flex;gap:6px;overflow-x:auto;padding:2px 0 12px;scrollbar-width:none}
+.seg::-webkit-scrollbar{display:none}
+.seg button{border:1px solid var(--rule);background:var(--card);color:var(--text);border-radius:999px;padding:7px 14px;font-size:.9rem;white-space:nowrap;cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--card)}
+.place-block{margin-bottom:18px}
+.place-block h3{font-size:1.12rem;margin-bottom:4px}
+.place-note{color:var(--muted);font-size:.92rem;margin:0 0 10px}
+.item{background:var(--card);border:1px solid var(--rule);border-radius:12px;padding:12px 14px;margin-bottom:8px}
+.item .n{font-weight:650;font-size:1.02rem}
+.item .k{font-size:.8rem;color:var(--sand);font-weight:650}
+.item p{margin:4px 0 0;color:var(--muted);font-size:.93rem}
+.item .links{margin-top:8px}
+
+/* Ruta / nafta */
+.leg{margin-bottom:20px}
+.leg>h3{font-size:1.1rem;margin-bottom:2px}
+.leg .lsub{color:var(--muted);font-size:.88rem;margin:0 0 10px}
+.stops{list-style:none;margin:0;padding:0 0 0 20px;position:relative}
+.stops::before{content:"";position:absolute;left:5px;top:6px;bottom:6px;width:2px;background:var(--rule)}
+.stops li{position:relative;padding:8px 0 8px 4px}
+.stops li::before{content:"";position:absolute;left:-19px;top:14px;width:10px;height:10px;border-radius:50%;background:var(--sand);box-shadow:0 0 0 3px var(--bg)}
+.stops li.sinnafta::before{background:var(--rule)}
+.stops .nm{font-weight:650}
+.stops .dt{display:block;color:var(--muted);font-size:.87rem}
+.stops .kmr{font-size:.8rem;color:var(--accent);font-weight:650}
+.gap{background:var(--warn-bg);border-left:4px solid var(--warn);border-radius:8px;padding:8px 11px;font-size:.88rem;margin:6px 0 6px -20px}
+
+/* Preparar */
+.check{list-style:none;padding:0;margin:0 0 18px}
+.check li{background:var(--card);border:1px solid var(--rule);border-radius:12px;padding:11px 12px;margin-bottom:8px;display:grid;grid-template-columns:26px 1fr;gap:8px}
+.check input{width:20px;height:20px;margin:2px 0 0;accent-color:var(--accent)}
+.check li.done span{text-decoration:line-through;opacity:.6}
+.progress{height:8px;background:var(--rule);border-radius:99px;overflow:hidden;margin:0 0 14px}
+.progress i{display:block;height:100%;background:var(--ok);width:0;transition:width .3s}
+.nums{display:grid;grid-template-columns:repeat(auto-fit,minmax(138px,1fr));gap:8px;margin-bottom:18px}
+.nums a{display:block;text-decoration:none;background:var(--card);border:1px solid var(--rule);border-radius:12px;padding:10px 12px;color:var(--text)}
+.nums b{display:block;font-size:1.35rem;color:var(--accent)}
+.nums span{font-size:.84rem;color:var(--muted)}
+
+nav.tabs{position:fixed;left:0;right:0;bottom:0;background:var(--card);border-top:1px solid var(--rule);display:flex;justify-content:center;padding-bottom:env(safe-area-inset-bottom);z-index:10}
+nav.tabs .in{display:grid;grid-template-columns:repeat(5,1fr);width:100%;max-width:720px}
+nav.tabs button{background:none;border:0;color:var(--muted);padding:8px 2px 9px;font-size:.72rem;display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer}
+nav.tabs button svg{width:21px;height:21px}
+nav.tabs button[aria-selected="true"]{color:var(--accent);font-weight:650}
+@media (prefers-reduced-motion: reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <button class="theme-toggle" id="themeBtn" type="button">Tema</button>
+  <div class="wrap">
+    <h1>Costa patagónica</h1>
+    <p class="sub">Bernal → Península Valdés → Golfo San Matías → Monte Hermoso</p>
+    <div class="status" id="status" aria-live="polite"></div>
+  </div>
+</header>
+
+<main class="wrap">
+  <section class="view" id="v-ahora" aria-label="Dónde estamos ahora">
+    <h2>Ahora</h2>
+    <div id="gpsBox"></div>
+    <div id="manualBox"></div>
+    <div id="cercaBox"></div>
+    <div id="climaHoy"></div>
+    <div id="mareaHoy"></div>
+    <div id="datosBox"></div>
+  </section>
+
+  <section class="view active" id="v-dias" aria-label="Itinerario día por día">
+    <h2>Día por día</h2>
+    <p class="lead">Tocá un día para ver el plan, el pronóstico y la marea. Lo que marques queda guardado en este celular.</p>
+    <div id="planBox"></div>
+    <div id="days"></div>
+    <div id="selloBox"></div>
+  </section>
+
+  <section class="view" id="v-ruta" aria-label="Combustible y puntos de la ruta">
+    <h2>Nafta y ruta</h2>
+    <p class="lead">Dónde cargar en cada tramo y cuáles son los saltos largos sin servicio.</p>
+    <div id="legs"></div>
+  </section>
+
+  <section class="view" id="v-lugares" aria-label="Dónde dormir y comer">
+    <h2>Dormir y comer</h2>
+    <div class="seg" id="segTipo" role="group" aria-label="Dormir o comer"></div>
+    <div class="seg" id="segLugar" role="group" aria-label="Filtrar por lugar"></div>
+    <div id="lugares"></div>
+  </section>
+
+  <section class="view" id="v-prep" aria-label="Preparar el viaje">
+    <h2>Preparar</h2>
+    <p class="lead">Reservas y cosas para tener en cuenta antes y durante el viaje.</p>
+    <div class="progress" aria-hidden="true"><i id="bar"></i></div>
+    <ul class="check" id="check"></ul>
+    <h3 style="margin:6px 0 8px">Teléfonos útiles</h3>
+    <div class="nums">
+      <a href="tel:911"><b>911</b><span>Emergencias</span></a>
+      <a href="tel:107"><b>107</b><span>Emergencia médica</span></a>
+      <a href="tel:106"><b>106</b><span>Prefectura</span></a>
+      <a href="tel:100"><b>100</b><span>Bomberos</span></a>
+    </div>
+    <h3 style="margin:6px 0 8px">En la ruta</h3>
+    <div class="item"><p><b>Barrera zoosanitaria patagónica</b> (Río Colorado / Patagones): no pueden entrar carnes con hueso ni ciertas frutas y verduras frescas. Viajen sin eso en la heladerita.</p></div>
+    <div class="item"><p><b>Clima de fin de septiembre:</b> mínimas de 5 a 8 °C y máximas de 15 a 20 °C, con viento fuerte frecuente. Rompeviento, gorro y protector solar.</p></div>
+    <div class="item"><p><b>Sobre las mareas de esta guía:</b> son predicciones del Servicio de Hidrografía Naval, tomadas de mareasargentinas.com.ar, para el puerto habilitado más cercano a cada playa. Los horarios están redondeados a los 15 minutos del muestreo y la altura entre pleamar y bajamar se interpola. Sirven para planificar una caminata por la restinga; para navegar, la tabla oficial del SHN.</p></div>
+    <div class="item"><p><b>Sobre la ubicación:</b> el kilómetro de ruta es una estimación calculada entre localidades conocidas, y las distancias a los puntos cercanos son en línea recta, no por camino.</p></div>
+    <div class="item"><p><b>Si el GPS no funciona:</b> cuando la guía se abre embebida dentro de otra aplicación, el navegador no le da acceso a la ubicación. En la pestaña Ahora podés cargar la ruta y el kilómetro a mano, que están en los carteles de la ruta, y todo lo demás funciona igual.</p></div>
+  </section>
+</main>
+
+<nav class="tabs" aria-label="Secciones">
+  <div class="in" role="tablist">
+    <button role="tab" aria-selected="false" data-v="v-ahora"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg>Ahora</button>
+    <button role="tab" aria-selected="true" data-v="v-dias"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h10"/></svg>Días</button>
+    <button role="tab" aria-selected="false" data-v="v-ruta"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 22V8a2 2 0 0 1 2-2h5v16M10 22h11V13a2 2 0 0 0-2-2h-3M6 10h2M6 14h2"/></svg>Nafta</button>
+    <button role="tab" aria-selected="false" data-v="v-lugares"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 18v-7a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v7M3 14h18M7 9V6h4v3"/></svg>Lugares</button>
+    <button role="tab" aria-selected="false" data-v="v-prep"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3 8-8M20 12v7a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h9"/></svg>Preparar</button>
+  </div>
+</nav>
+
+<script src="datos.js"></script>
+<script>
+const START = new Date(2026, 8, 29);
+const q = s => "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(s);
+const dir = (a,b) => "https://www.google.com/maps/dir/?api=1&origin=" + encodeURIComponent(a) + "&destination=" + encodeURIComponent(b) + "&travelmode=driving";
+const store = {
+  get(k){ try { return localStorage.getItem("costa26:"+k); } catch(e){ return null; } },
+  set(k,v){ try { localStorage.setItem("costa26:"+k, v); } catch(e){} }
+};
+const D = (window.DATOS && typeof window.DATOS === "object") ? window.DATOS : {clima:{}, mareas:{}, actualizado:null};
+
+const LUGARES = {
+  "bahia-blanca":"Bahía Blanca", "puerto-madryn":"Puerto Madryn", "puerto-piramides":"Puerto Pirámides",
+  "trelew":"Trelew", "las-grutas":"Las Grutas", "playas-doradas":"Playas Doradas",
+  "san-antonio-oeste":"San Antonio Oeste", "san-antonio-este":"San Antonio Este",
+  "el-condor":"El Cóndor", "viedma":"Viedma", "monte-hermoso":"Monte Hermoso"
+};
+
+/* ---- Rutas: vértices con kilómetro real de la ruta ---- */
+const RUTAS = {
+  "RN 3": [
+    {la:-34.71,lo:-58.28,km:0},   {la:-35.05,lo:-58.76,km:62},  {la:-35.43,lo:-58.81,km:112},
+    {la:-36.02,lo:-59.10,km:188}, {la:-36.39,lo:-59.49,km:243}, {la:-36.78,lo:-59.86,km:299},
+    {la:-37.32,lo:-59.98,km:360}, {la:-37.95,lo:-60.09,km:450}, {la:-38.37,lo:-60.28,km:492},
+    {la:-38.48,lo:-60.51,km:514}, {la:-38.62,lo:-60.94,km:564}, {la:-38.72,lo:-61.28,km:593},
+    {la:-38.72,lo:-62.27,km:681}, {la:-39.26,lo:-62.62,km:779}, {la:-39.38,lo:-62.64,km:792},
+    {la:-39.50,lo:-62.68,km:807}, {la:-39.89,lo:-62.71,km:850}, {la:-40.20,lo:-62.61,km:881},
+    {la:-40.80,lo:-62.98,km:961}, {la:-40.81,lo:-63.00,km:966}, {la:-40.73,lo:-64.95,km:1139},
+    {la:-40.80,lo:-65.08,km:1149},{la:-41.60,lo:-65.35,km:1265},{la:-42.77,lo:-65.04,km:1394},
+    {la:-43.25,lo:-65.31,km:1451}
+  ],
+  "RP 1 (Camino de la Costa)": [
+    {la:-40.81,lo:-63.00,km:0},   {la:-41.05,lo:-62.82,km:35},  {la:-41.09,lo:-62.86,km:38},
+    {la:-41.11,lo:-63.09,km:65},  {la:-41.11,lo:-63.12,km:68},  {la:-41.09,lo:-63.26,km:81},
+    {la:-41.07,lo:-63.42,km:97},  {la:-41.05,lo:-63.58,km:132}, {la:-41.05,lo:-63.62,km:135},
+    {la:-41.02,lo:-64.11,km:149}, {la:-40.95,lo:-64.50,km:163}, {la:-40.93,lo:-64.62,km:165},
+    {la:-40.81,lo:-64.87,km:210}
+  ],
+  "RP 2 (Península Valdés)": [
+    {la:-42.77,lo:-65.04,km:0},  {la:-42.50,lo:-64.60,km:45}, {la:-42.57,lo:-64.28,km:100}
+  ],
+  "RP 5 (a Playas Doradas)": [
+    {la:-41.60,lo:-65.35,km:0},  {la:-41.63,lo:-65.02,km:32}
+  ],
+  "RP 78 (a Monte Hermoso)": [
+    {la:-38.72,lo:-61.28,km:0},  {la:-38.98,lo:-61.30,km:32}
+  ]
+};
+
+/* ---- Puntos de interés. t: nafta|pueblo|salud|policia|interes ---- */
+const POIS = [
+  {n:"Cañuelas", la:-35.05, lo:-58.76, t:"nafta", r:"RN 3 km 62", d:"Varias estaciones sobre la ruta"},
+  {n:"San Miguel del Monte", la:-35.43, lo:-58.81, t:"nafta", r:"RN 3 km 112"},
+  {n:"Las Flores", la:-36.02, lo:-59.10, t:"nafta", r:"RN 3 km 188", d:"Hospital municipal"},
+  {n:"Cacharí", la:-36.39, lo:-59.49, t:"nafta", r:"RN 3 km 243"},
+  {n:"Azul", la:-36.78, lo:-59.86, t:"nafta", r:"RN 3 km 299", d:"Ciudad grande, buen lugar para almorzar"},
+  {n:"Hospital Pintos, Azul", la:-36.78, lo:-59.85, t:"salud", r:"RN 3 km 299"},
+  {n:"Chillar", la:-37.32, lo:-59.98, t:"nafta", r:"RN 3 km 360"},
+  {n:"Adolfo Gonzales Chaves", la:-37.95, lo:-60.09, t:"nafta", r:"RN 3 km 450"},
+  {n:"Tres Arroyos", la:-38.37, lo:-60.28, t:"nafta", r:"RN 3 km 492", d:"Ciudad, servicios completos"},
+  {n:"Hospital Pirovano, Tres Arroyos", la:-38.37, lo:-60.27, t:"salud", r:"RN 3 km 492"},
+  {n:"Micaela Cascallares", la:-38.48, lo:-60.51, t:"pueblo", r:"RN 3 km 514"},
+  {n:"El Perdido", la:-38.62, lo:-60.94, t:"pueblo", r:"RN 3 km 564"},
+  {n:"Coronel Dorrego", la:-38.72, lo:-61.28, t:"nafta", r:"RN 3 km 593", d:"Empalme con la RP 78 a Monte Hermoso"},
+  {n:"Monte Hermoso", la:-38.98, lo:-61.30, t:"nafta", r:"RP 78", d:"Estaciones en el pueblo"},
+  {n:"Pehuen Có", la:-38.99, lo:-61.55, t:"interes", r:"Costa", d:"Reserva de huellas fósiles"},
+  {n:"Bahía Blanca", la:-38.72, lo:-62.27, t:"nafta", r:"RN 3 km 681", d:"Ciudad grande, todos los servicios"},
+  {n:"Hospital Penna, Bahía Blanca", la:-38.72, lo:-62.26, t:"salud", r:"RN 3 km 681"},
+  {n:"Mayor Buratovich", la:-39.26, lo:-62.62, t:"nafta", r:"RN 3 km 779"},
+  {n:"Hilario Ascasubi", la:-39.38, lo:-62.64, t:"nafta", r:"RN 3 km 792"},
+  {n:"Pedro Luro", la:-39.50, lo:-62.68, t:"nafta", r:"RN 3 km 807", d:"Última carga importante antes de la barrera"},
+  {n:"Villalonga", la:-39.89, lo:-62.71, t:"nafta", r:"RN 3 km 850"},
+  {n:"Stroeder", la:-40.20, lo:-62.61, t:"nafta", r:"RN 3 km 881"},
+  {n:"Carmen de Patagones", la:-40.80, lo:-62.98, t:"nafta", r:"RN 3 km 961", d:"Hospital y comisaría"},
+  {n:"Viedma", la:-40.81, lo:-63.00, t:"nafta", r:"RN 3 km 966", d:"Capital provincial, todos los servicios"},
+  {n:"Hospital Zatti, Viedma", la:-40.80, lo:-62.99, t:"salud", r:"Viedma"},
+  {n:"San Antonio Oeste", la:-40.73, lo:-64.95, t:"nafta", r:"RN 3 km 1139", d:"Última carga antes de la RP 1 y del salto a Sierra Grande"},
+  {n:"Las Grutas", la:-40.80, lo:-65.08, t:"nafta", r:"RN 3 km 1149", d:"Estaciones en el acceso y en el pueblo"},
+  {n:"Sierra Grande", la:-41.60, lo:-65.35, t:"nafta", r:"RN 3 km 1265", d:"Última carga antes de los 129 km a Madryn"},
+  {n:"Playas Doradas", la:-41.63, lo:-65.02, t:"interes", r:"RP 5", d:"Sin combustible; servicios muy limitados fuera de temporada"},
+  {n:"Puerto Madryn", la:-42.77, lo:-65.04, t:"nafta", r:"RN 3 km 1394", d:"Ciudad, todos los servicios"},
+  {n:"Hospital Isola, Puerto Madryn", la:-42.77, lo:-65.03, t:"salud", r:"Puerto Madryn"},
+  {n:"Trelew", la:-43.25, lo:-65.31, t:"nafta", r:"RN 3 km 1451"},
+  {n:"Gaiman", la:-43.29, lo:-65.49, t:"pueblo", r:"RP 25", d:"Casas de té galesas"},
+  {n:"Punta Tombo", la:-44.04, lo:-65.20, t:"interes", r:"RP 1 y RP 42", d:"Pingüinera; últimos 22 km de ripio"},
+  {n:"Puerto Pirámides", la:-42.57, lo:-64.28, t:"nafta", r:"Península Valdés", d:"Única estación de toda la Península"},
+  {n:"Istmo Carlos Ameghino", la:-42.50, lo:-64.60, t:"interes", r:"RP 2", d:"Centro de visitantes y pago de ingreso"},
+  {n:"Caleta Valdés", la:-42.44, lo:-63.63, t:"interes", r:"Península Valdés", d:"Elefantes marinos"},
+  {n:"Punta Norte", la:-42.08, lo:-63.78, t:"interes", r:"Península Valdés", d:"Lobos y orcas"},
+  {n:"Playa El Doradillo", la:-42.64, lo:-64.97, t:"interes", r:"RP 42", d:"Ballenas desde la orilla con marea alta"},
+  {n:"Reserva Punta Loma", la:-42.83, lo:-64.88, t:"interes", r:"Camino costero", d:"Lobería con miradores"},
+  {n:"Punta Perdices", la:-40.90, lo:-64.90, t:"interes", r:"Acceso de ripio", d:"Conchillas blancas y agua turquesa"},
+  {n:"Puerto San Antonio Este", la:-40.81, lo:-64.87, t:"interes", r:"RP 1 km 210", d:"Inicio de la RP 1; sin combustible desde acá"},
+  {n:"Pozo Salado y Punta Mejillón", la:-40.93, lo:-64.62, t:"interes", r:"RP 1 km 165"},
+  {n:"Caleta de los Loros", la:-41.02, lo:-64.11, t:"interes", r:"RP 1 km 149", d:"Reserva: médanos, bosque costero y aves"},
+  {n:"Bahía Creek", la:-41.05, lo:-63.62, t:"interes", r:"RP 1 km 135", d:"Médanos enormes y playa de arena blanca"},
+  {n:"Bajada Echandi", la:-41.07, lo:-63.42, t:"interes", r:"RP 1 km 97"},
+  {n:"Bahía Rosas", la:-41.09, lo:-63.26, t:"interes", r:"RP 1 km 81"},
+  {n:"Lobería Punta Bermeja", la:-41.11, lo:-63.12, t:"interes", r:"RP 1 km 68", d:"Desde acá empieza el asfalto"},
+  {n:"La Lobería", la:-41.11, lo:-63.09, t:"interes", r:"RP 1 km 65"},
+  {n:"Faro Río Negro", la:-41.09, lo:-62.86, t:"interes", r:"RP 1 km 38"},
+  {n:"Balneario El Cóndor", la:-41.05, lo:-62.82, t:"pueblo", r:"RP 1 km 35", d:"Loros barranqueros; servicios limitados fuera de temporada"}
+];
+
+/* ---- Tramos de combustible ---- */
+const TRAMOS = [
+  {t:"Bernal → Bahía Blanca", s:"29/09 · RN 3 · unos 675 km", p:[
+    ["Cañuelas","RN 3 km 62",1,"Varias estaciones sobre la ruta"],
+    ["San Miguel del Monte","RN 3 km 112",1,""],
+    ["Las Flores","RN 3 km 188",1,"Hospital"],
+    ["Cacharí","RN 3 km 243",1,""],
+    ["Azul","RN 3 km 299",1,"Mitad de camino. Ciudad grande, buen lugar para almorzar"],
+    ["Chillar","RN 3 km 360",1,""],
+    ["Adolfo Gonzales Chaves","RN 3 km 450",1,""],
+    ["Tres Arroyos","RN 3 km 492",1,"Ciudad con hospital y todos los servicios"],
+    ["Coronel Dorrego","RN 3 km 593",1,""],
+    ["Bahía Blanca","RN 3 km 681",1,"Llegada"]
+  ], g:[]},
+  {t:"Bahía Blanca → Puerto Madryn", s:"30/09 · RN 3 · unos 710 km, el tramo más largo", p:[
+    ["Mayor Buratovich","RN 3 km 779",1,""],
+    ["Hilario Ascasubi","RN 3 km 792",1,""],
+    ["Pedro Luro","RN 3 km 807",1,""],
+    ["Villalonga","RN 3 km 850",1,""],
+    ["Stroeder","RN 3 km 881",1,""],
+    ["Carmen de Patagones","RN 3 km 961",1,"Barrera zoosanitaria en la zona"],
+    ["Viedma","RN 3 km 966",1,"Última ciudad grande por un buen rato"],
+    ["San Antonio Oeste","RN 3 km 1139",1,"Cargar sí o sí"],
+    ["Sierra Grande","RN 3 km 1265",1,"Cargar sí o sí"],
+    ["Puerto Madryn","RN 3 km 1394",1,"Llegada"]
+  ], g:[
+    ["Viedma → San Antonio Oeste","173 km sin ningún pueblo en el medio"],
+    ["San Antonio Oeste → Sierra Grande","126 km de estepa"],
+    ["Sierra Grande → Puerto Madryn","129 km sin servicios"]
+  ]},
+  {t:"Península Valdés", s:"1/10 · RP 2 y ripio · entre 350 y 400 km en el día", p:[
+    ["Puerto Madryn","Salida",1,"Salir con el tanque lleno"],
+    ["Puerto Pirámides","A unos 100 km",1,"Única estación de toda la Península"],
+    ["Caleta Valdés y Punta Norte","Circuito de ripio",0,"Sin combustible, sin comercios"]
+  ], g:[
+    ["Todo el circuito norte","Desde Pirámides no hay otra estación: calculen el consumo de ida y vuelta"]
+  ]},
+  {t:"Punta Tombo, Trelew y Gaiman", s:"2/10 · RN 3 al sur y RP 42 · unos 400 km ida y vuelta", p:[
+    ["Puerto Madryn","RN 3 km 1394",1,""],
+    ["Trelew","RN 3 km 1451",1,"Cargar antes de bajar a Punta Tombo"],
+    ["Punta Tombo","RP 42",0,"Últimos 22 km de ripio, sin servicios"],
+    ["Gaiman","RP 25",0,"Pueblo con comercios, sin estación grande"]
+  ], g:[]},
+  {t:"Madryn → Playas Doradas → Las Grutas", s:"4/10 · RN 3 y RP 5 · unos 330 km", p:[
+    ["Puerto Madryn","RN 3 km 1394",1,"Salir con el tanque lleno"],
+    ["Sierra Grande","RN 3 km 1265",1,"Cargar acá antes del desvío"],
+    ["Playas Doradas","RP 5, 32 km de desvío",0,"Sin combustible"],
+    ["San Antonio Oeste","RN 3 km 1139",1,""],
+    ["Las Grutas","RN 3 km 1149",1,"Llegada"]
+  ], g:[
+    ["Madryn → Sierra Grande","129 km sin servicios"]
+  ]},
+  {t:"Camino de la Costa (RP 1)", s:"8/10 · el tramo sin servicios del viaje · unos 300 km", p:[
+    ["San Antonio Oeste","RN 3 km 1139",1,"Tanque lleno, bidón de agua y algo para comer"],
+    ["Puerto San Antonio Este","RP 1 km 210",0,"Empieza el ripio"],
+    ["Pozo Salado y Punta Mejillón","RP 1 km 165",0,""],
+    ["Caleta de los Loros","RP 1 km 149",0,""],
+    ["Bahía Creek","RP 1 km 135",0,"Parada larga: médanos y playa"],
+    ["Bahía Rosas","RP 1 km 81",0,""],
+    ["Punta Bermeja","RP 1 km 68",0,"Acá empieza el asfalto"],
+    ["El Cóndor","RP 1 km 35",0,"Servicios limitados fuera de temporada"],
+    ["Viedma","RN 3 km 966",1,"Primera estación segura del día"]
+  ], g:[
+    ["San Antonio Oeste → Viedma","Unos 210 km de RP 1 sin una sola estación de servicio y casi sin señal de celular"]
+  ]},
+  {t:"Las Grutas → Monte Hermoso (plan directo)", s:"8/10 · RN 3 todo el camino · unos 600 km", p:[
+    ["Las Grutas","RN 3 km 1149",1,"Salir con el tanque lleno"],
+    ["Viedma","RN 3 km 966",1,"Primera carga del día, a 173 km"],
+    ["Stroeder","RN 3 km 881",1,""],
+    ["Pedro Luro","RN 3 km 807",1,""],
+    ["Bahía Blanca","RN 3 km 681",1,""],
+    ["Coronel Dorrego","RN 3 km 593",1,"Desvío por la RP 78"],
+    ["Monte Hermoso","RP 78",1,"Llegada"]
+  ], g:[
+    ["Las Grutas → Viedma","173 km sin ningún pueblo en el medio"]
+  ]},
+  {t:"Viedma → Monte Hermoso", s:"9/10 · RN 3 al norte y RP 78 · unos 390 km", p:[
+    ["Viedma","RN 3 km 966",1,""],
+    ["Stroeder","RN 3 km 881",1,""],
+    ["Villalonga","RN 3 km 850",1,""],
+    ["Pedro Luro","RN 3 km 807",1,""],
+    ["Bahía Blanca","RN 3 km 681",1,""],
+    ["Coronel Dorrego","RN 3 km 593",1,"Desvío por la RP 78"],
+    ["Monte Hermoso","RP 78",1,"Llegada"]
+  ], g:[]},
+  {t:"Monte Hermoso → Bernal", s:"10/10 · RP 78 y RN 3 · unos 630 km", p:[
+    ["Monte Hermoso","Salida",1,"Salir cargados"],
+    ["Coronel Dorrego","RN 3 km 593",1,""],
+    ["Tres Arroyos","RN 3 km 492",1,"Almuerzo"],
+    ["Adolfo Gonzales Chaves","RN 3 km 450",1,""],
+    ["Azul","RN 3 km 299",1,"Última parada cómoda"],
+    ["Las Flores","RN 3 km 188",1,""],
+    ["Cañuelas","RN 3 km 62",1,""],
+    ["Bernal","Llegada",1,""]
+  ], g:[]}
+];
+
+const DAYS = [
+ {t:"Bernal → Bahía Blanca", base:"Noche en Bahía Blanca", cl:["bahia-blanca"], ma:null,
+  drive:{km:"≈ 675 km", h:"≈ 8 h", r:"RN 3 por Cañuelas, Azul y Tres Arroyos"},
+  acts:[
+   ["Salir temprano","Idealmente antes de las 8 para llegar con luz y descansar."],
+   ["Paradas sugeridas","Azul (mitad de camino) y Tres Arroyos para almorzar."],
+   ["Cenar temprano y dormir","Mañana es el tramo más largo del viaje."]
+  ],
+  tip:["alt","Para salir rápido conviene dormir cerca de la salida sur hacia la RN 3."],
+  links:[["Cómo llegar", dir("Bernal, Buenos Aires","Bahía Blanca, Buenos Aires")]]},
+
+ {t:"Bahía Blanca → Puerto Madryn", base:"Noche 1 de 4 en Madryn", cl:["bahia-blanca","puerto-madryn"], ma:null,
+  drive:{km:"≈ 710 km", h:"≈ 8 h 30", r:"RN 3 por Viedma, San Antonio Oeste y Sierra Grande"},
+  acts:[
+   ["Barrera zoosanitaria","Control en el ingreso a la Patagonia. Sin carne con hueso ni frutas frescas."],
+   ["Cargar en San Antonio Oeste y Sierra Grande","Son los dos últimos puntos antes de los 129 km finales de estepa."],
+   ["Paseo por la rambla al atardecer","Estiren las piernas frente al Golfo Nuevo."],
+   ["Cena en Cantina El Náutico","Clásico de Madryn: reserven con anticipación."]
+  ],
+  tip:["","Si llegan cansados, cenen cerca del hotel y guarden la cena especial para otro día."],
+  links:[["Cómo llegar", dir("Bahía Blanca","Puerto Madryn, Chubut")]]},
+
+ {t:"Península Valdés y ballenas", base:"Noche 2 en Madryn", cl:["puerto-piramides"], ma:"puerto-piramides",
+  drive:{km:"≈ 350 a 400 km", h:"Día completo", r:"RP 2 a Puerto Pirámides y circuito de ripio"},
+  acts:[
+   ["Salir a las 7:30","Pago de ingreso al Área Natural Protegida en el Istmo Ameghino."],
+   ["Avistaje embarcado en Puerto Pirámides","Plena temporada de ballena franca. Salidas de una hora y media según viento."],
+   ["Almuerzo en Pirámides","Cargar combustible ahí: es la única estación de la Península."],
+   ["Caleta Valdés y Punta Norte","Elefantes marinos y lobos. El ripio es exigente: velocidad baja."],
+   ["Pingüinera de Estancia San Lorenzo (opcional)","Temporada abierta desde principios de septiembre. Se visita con reserva."]
+  ],
+  tip:["","Las lanchas se suspenden con viento. Si pasa, dejen el avistaje para el sábado 3 y hagan hoy el circuito terrestre."],
+  links:[["Puerto Pirámides", q("Puerto Pirámides, Chubut")],["Caleta Valdés", q("Caleta Valdés, Península Valdés")],["Estancia San Lorenzo", q("Estancia San Lorenzo, Península Valdés")]]},
+
+ {t:"Punta Tombo, Trelew y Gaiman", base:"Noche 3 en Madryn", cl:["trelew"], ma:null,
+  drive:{km:"≈ 400 km ida y vuelta", h:"Día completo", r:"RN 3 al sur y RP 42 (últimos 22 km de ripio)"},
+  acts:[
+   ["Pingüinera de Punta Tombo","Temporada abierta desde el 14/09 con senderos y centro de interpretación renovados. De 8 a 20, último ingreso 18 h."],
+   ["Museo Paleontológico Egidio Feruglio (Trelew)","Uno de los mejores museos de dinosaurios del país."],
+   ["Té galés en Gaiman","Merienda con torta negra en una casa de té tradicional."],
+   ["Vuelta a Madryn","Unos 80 km desde Gaiman."]
+  ],
+  tip:["alt","A principios de octubre las parejas ya están instaladas en los nidos: mucha actividad en la colonia."],
+  links:[["Punta Tombo", q("Área Natural Protegida Punta Tombo")],["MEF Trelew", q("Museo Paleontológico Egidio Feruglio, Trelew")],["Gaiman", q("Gaiman, Chubut")]]},
+
+ {t:"Madryn: ballenas desde la costa", base:"Noche 4 en Madryn", cl:["puerto-madryn"], ma:"puerto-madryn",
+  drive:{km:"≈ 60 km", h:"Día tranquilo", r:"Salidas cortas desde la ciudad"},
+  acts:[
+   ["Playa El Doradillo","A 15 km al norte. Con marea alta las ballenas se acercan a pocos metros de la orilla: miren la tabla de acá abajo."],
+   ["Ecocentro y Punta Cuevas","Centro de interpretación del mar y el sitio del desembarco galés."],
+   ["Reserva Punta Loma","Lobería a 17 km al sur, con miradores sobre el acantilado."],
+   ["Cena de cordero patagónico","Chona o Matilde."]
+  ],
+  tip:["","Día comodín: si el jueves 1 no salió la lancha en Pirámides, hoy es la revancha."],
+  links:[["El Doradillo", q("Playa El Doradillo, Puerto Madryn")],["Ecocentro", q("Ecocentro Puerto Madryn")],["Punta Loma", q("Reserva Punta Loma, Puerto Madryn")]]},
+
+ {t:"Madryn → Playas Doradas → Las Grutas", base:"Noche 1 de 4 en Las Grutas", cl:["puerto-madryn","las-grutas"], ma:"playas-doradas",
+  drive:{km:"≈ 330 km", h:"≈ 4 h 30 de manejo", r:"RN 3 al norte, desvío de 32 km por la RP 5 y vuelta a la RN 3"},
+  acts:[
+   ["Salir después del desayuno","Check-out temprano: hoy hay parada larga en el camino."],
+   ["Sierra Grande","Pueblo minero sobre la RN 3, a mitad de camino. Cargar combustible acá."],
+   ["Playas Doradas","Arena dorada, aguas tranquilas y acantilados bajos, casi sin gente en esta época."],
+   ["Almuerzo en Playas Doradas","En temporada baja casi todo está cerrado: lleven comida o coman algo en Sierra Grande."],
+   ["Llegada a Las Grutas al atardecer","Check-in y cena tranquila."]
+  ],
+  tip:["","El desvío suma unos 65 km al viaje directo. Calculen dos horas de parada para llegar a Las Grutas con luz."],
+  links:[["Playas Doradas", dir("Puerto Madryn","Playas Doradas, Río Negro")],["Seguir a Las Grutas", dir("Playas Doradas, Río Negro","Las Grutas, Río Negro")]]},
+
+ {t:"Las Grutas: grutas, mareas y acantilado", base:"Noche 2 en Las Grutas", cl:["las-grutas"], ma:"las-grutas",
+  drive:{km:"Sin auto", h:"Día a pie", r:"Todo dentro del pueblo"},
+  acts:[
+   ["Mirar la marea antes de salir","Acá abajo está la tabla del día: las grutas se caminan con marea baja."],
+   ["Recorrer las bajadas y las grutas","Con marea baja se camina entre las grutas del acantilado."],
+   ["Peatonal y centro","Cafés, heladerías y el pueblo sin la multitud del verano."],
+   ["Piedras Coloradas al atardecer","Formaciones rojizas al sur del pueblo."]
+  ],
+  tip:["","La amplitud de marea supera los 8 metros. No se queden en la restinga cuando empieza a subir."],
+  links:[["Playa Las Grutas", q("Playa Las Grutas, Río Negro")],["Piedras Coloradas", q("Piedras Coloradas, Las Grutas")]]},
+
+ {t:"Punta Perdices y Las Conchillas", base:"Noche 3 en Las Grutas", cl:["san-antonio-oeste"], ma:"san-antonio-este",
+  drive:{km:"≈ 150 km ida y vuelta", h:"Medio día largo", r:"Por San Antonio Oeste hacia el Puerto San Antonio Este; tramos de ripio"},
+  acts:[
+   ["Punta Perdices","Playa de conchillas blancas y agua turquesa. Vayan con marea alta para ver el color."],
+   ["Playa Las Conchillas","Muy cerca, sobre la misma costa de la bahía."],
+   ["Llevar agua, comida y sombra","No hay servicios en las playas."]
+  ],
+  tip:["","Ripio y arena en los accesos: no bajen del camino marcado con auto de calle."],
+  links:[["Punta Perdices", q("Punta Perdices, San Antonio Este")],["Las Conchillas", q("Playa Las Conchillas, San Antonio Este")]]},
+
+ {t:"San Antonio Este y Oeste", base:"Noche 4 en Las Grutas", cl:["san-antonio-oeste"], ma:"san-antonio-este",
+  drive:{km:"≈ 130 km", h:"Día liviano", r:"Las Grutas – San Antonio Oeste – Puerto San Antonio Este"},
+  acts:[
+   ["Puerto San Antonio Este","Puerto frutícola de aguas profundas y playas de la punta."],
+   ["Costanera de San Antonio Oeste","La bahía es un sitio clave para aves playeras migratorias, que llegan justo en esta época."],
+   ["Comprar mariscos frescos","Pescaderías del puerto de San Antonio Oeste."],
+   ["Preparar el auto para mañana","Presión de neumáticos, auxilio, tanque lleno y bidones de agua."],
+   ["Consultar el estado de la RP 1","Vialidad Rionegrina o la oficina de turismo. Mañana no hay dónde cargar en 210 km."],
+   ["Mirar el pronóstico de mañana","Con lluvia o viento fuerte conviene el plan directo a Monte Hermoso."]
+  ],
+  tip:["alt","Hoy se decide el tramo final. Con marea baja, además, se ven bandadas enormes de aves alimentándose en la costa de San Antonio Oeste."],
+  links:[["San Antonio Este", q("Puerto San Antonio Este")],["San Antonio Oeste", q("San Antonio Oeste, Río Negro")]]},
+
+ {t:"Camino de la Costa (RP 1) y Bahía Creek → Viedma", base:"Noche en Viedma", cl:["las-grutas","viedma"], ma:"el-condor",
+  drive:{km:"≈ 300 km", h:"7 a 9 h con paradas", r:"RP 1 desde San Antonio Este: unos 145 km de ripio y 65 km de asfalto desde La Lobería"},
+  acts:[
+   ["Salir temprano con el tanque lleno","Cargar en San Antonio Oeste. No hay estaciones hasta Viedma."],
+   ["Pozo Salado y Punta Mejillón","Primeras playas vírgenes del recorrido (km 165)."],
+   ["Reserva Caleta de los Loros","Médanos, bosque costero y aves (km 149)."],
+   ["Bahía Creek","La parada larga del día (km 135). Médanos enormes sobre una playa de arena blanca, flamencos y lobos marinos. Calculen una hora y media o dos."],
+   ["Caminata hacia la caleta desde Bahía Creek","Se llega caminando por los médanos, pero la marea sube rápido: no se alejen sin mirar la hora."],
+   ["Lobería de Punta Bermeja","Colonia de lobos marinos con miradores (km 68). Desde acá empieza el asfalto."],
+   ["El Cóndor","Faro Río Negro y la gran colonia de loros barranqueros en los acantilados (km 35)."],
+   ["Llegada a Viedma y cena en la costanera","Achavil del Río o La Balsa."]
+  ],
+  tip:["","Arranquen a las 8 para llegar a El Cóndor con luz. Si amanece con lluvia o viento muy fuerte, cambiá el tramo final arriba de la lista de días: se va derecho a Monte Hermoso por asfalto."],
+  links:[["Bahía Creek", q("Bahía Creek, Río Negro")],["Caleta de los Loros", q("Caleta de los Loros, Río Negro")],["Punta Bermeja", q("Lobería Punta Bermeja, Río Negro")],["El Cóndor", q("Balneario El Cóndor, Río Negro")]]},
+
+ {t:"Viedma → Monte Hermoso", base:"Noche en Monte Hermoso", cl:["viedma","monte-hermoso"], ma:null,
+  drive:{km:"≈ 390 km", h:"≈ 4 h 30", r:"RN 3 al norte y acceso por la RP 78 desde Coronel Dorrego"},
+  acts:[
+   ["Carmen de Patagones por la mañana","Cruzar el río en lancha y recorrer el casco histórico y el cerro de la Caballada."],
+   ["Salida a media mañana","Almuerzo en ruta o llegando."],
+   ["Atardecer en la playa","En Monte Hermoso el sol sale y se pone sobre el mar."]
+  ],
+  tip:["alt","Con este plan queda una sola noche en Monte Hermoso y no entra Pehuen Có. Si lo quieren ver, es el plan directo."],
+  links:[["Cómo llegar", dir("Viedma, Río Negro","Monte Hermoso, Buenos Aires")],["Carmen de Patagones", q("Carmen de Patagones")]]},
+
+ {t:"Monte Hermoso → Bernal", base:"Llegada a casa", cl:["monte-hermoso"], ma:null,
+  drive:{km:"≈ 630 km", h:"≈ 7 h 30", r:"RP 78 y RN 3 por Tres Arroyos y Azul"},
+  acts:[
+   ["Salir a las 9 o 10","Llegada estimada entre las 18 y las 20."],
+   ["Parada en Tres Arroyos o Azul","Almuerzo y descanso del conductor."]
+  ],
+  tip:["alt","Sábado a la tarde el ingreso por la autopista Ezeiza–Cañuelas suele estar cargado."],
+  links:[["Cómo llegar", dir("Monte Hermoso, Buenos Aires","Bernal, Buenos Aires")]]}
+];
+
+/* Plan alternativo del tramo final: si la RP 1 no está para recorrerla,
+   el 8 se va derecho a Monte Hermoso y el 9 queda libre para Pehuen Có. */
+const PLAN_B = {
+ 9: {t:"Las Grutas → Monte Hermoso", base:"Noche 1 de 2 en Monte Hermoso", cl:["las-grutas","monte-hermoso"], ma:null,
+  drive:{km:"≈ 600 km", h:"≈ 7 h", r:"RN 3 al norte todo el camino y acceso por la RP 78 desde Coronel Dorrego"},
+  acts:[
+   ["Salir temprano","Es el segundo día más largo del viaje, todo por asfalto."],
+   ["Cargar en San Antonio Oeste","Después vienen 173 km sin ningún pueblo hasta Viedma."],
+   ["Parada en Viedma","Almuerzo sobre la costanera del río Negro."],
+   ["Seguir por la RN 3","Stroeder, Villalonga y Pedro Luro antes de Bahía Blanca."],
+   ["Llegada a Monte Hermoso","Check-in y cena tranquila."]
+  ],
+  tip:["","Este es el plan para mal tiempo: se cambia la RP 1 y Bahía Creek por un día completo en Monte Hermoso. Todo asfalto y sin tramos sin servicios."],
+  links:[["Cómo llegar", dir("Las Grutas, Río Negro","Monte Hermoso, Buenos Aires")],["Viedma", q("Viedma, Río Negro")]]},
+
+ 10: {t:"Monte Hermoso y Pehuen Có", base:"Noche 2 en Monte Hermoso", cl:["monte-hermoso"], ma:"monte-hermoso",
+  drive:{km:"≈ 80 km", h:"Día tranquilo", r:"Salidas cortas"},
+  acts:[
+   ["Pehuen Có","Reserva geológica con huellas fósiles de megafauna en la restinga: se ven con marea baja. Miren la tabla de acá abajo."],
+   ["Laguna Sauce Grande","Espejo de agua enorme detrás de los médanos."],
+   ["Faro Recalada","Uno de los faros más altos de Sudamérica. Consulten horario de visita."],
+   ["Última cena frente al mar","La Estación."]
+  ],
+  tip:["","Sin bajamar no se ven las huellas de Pehuen Có: organicen el día alrededor de la marea."],
+  links:[["Pehuen Có", q("Reserva Geológica Pehuen Có")],["Laguna Sauce Grande", q("Laguna Sauce Grande")],["Faro Recalada", q("Faro Recalada a Bahía Blanca, Monte Hermoso")]]}
+};
+
+function planActual(){ return store.get("plan") === "directo" ? "directo" : "costa"; }
+function diaDe(i){ return (planActual() === "directo" && PLAN_B[i]) ? PLAN_B[i] : DAYS[i]; }
+
+const DORMIR = [
+ {p:"Puerto Madryn", note:"4 noches: conviene la costanera o el centro para salir caminando a comer.", items:[
+  ["Dazzler by Wyndham Puerto Madryn","Sobre la rambla","Vistas al golfo, spa con hidromasaje y sauna, terraza. Pidan habitación con vista al mar: en temporada se ven ballenas desde el hotel."],
+  ["Territorio Hotel","Boutique","Diseño moderno, spa y vista al mar, en la zona más tranquila hacia Punta Cuevas y el Ecocentro."],
+  ["Hotel Península Valdés","Costanera","Clásico frente al mar, bien ubicado."],
+  ["Bahía Nueva Hotel","Costanera","Buena relación precio-ubicación."],
+  ["Rayentray Grand Hotel","Costanera","Hotel grande con servicios completos."],
+  ["La Posada de Madryn","Tranquilo","Jardines amplios y pileta, algo alejado del centro."],
+  ["Hotel Gran Madryn","Económico","Opción accesible cerca del mar."]
+ ]},
+ {p:"Las Grutas", note:"4 noches en temporada baja: confirmen que abran y pregunten por calefacción.", items:[
+  ["Hotel Acantilado","Hotel","Sobre la zona del acantilado, con restaurante propio."],
+  ["791 Hotel","Hotel","Bien valorado por viajeros."],
+  ["Médanos Patagonia","Hotel","Opción bien reseñada."],
+  ["Hotel Mil Rosas","Hotel","Opción bien reseñada."],
+  ["Casino y Hotel del Río","Hotel con casino","Servicios completos."],
+  ["Hotel Portovenere","Hotel","Alternativa céntrica."]
+ ]},
+ {p:"Viedma", note:"1 noche el 8/10, solo si hacen el Camino de la Costa. Cerca de la costanera para cenar caminando.", items:[
+  ["Hotel Austral","Costanera · 3 estrellas","Frente al río Negro, desayuno buffet, estacionamiento. Villarino 292.","02920422615"],
+  ["Hotel Nijar","Centro · 3 estrellas","Desayuno incluido, estacionamiento gratis, muy buena atención. Mitre 490.","02920422833"],
+  ["Hotel y Casino del Río","Categoría superior","Av. Francisco de Viedma 1451.","02920483632"],
+  ["Apart Hotel Costa del Faro (El Cóndor)","Frente al mar","Si prefieren dormir en la playa al terminar la RP 1. A 30 km de Viedma.","02920445938"]
+ ]},
+ {p:"Monte Hermoso", note:"1 noche por la costa, 2 por el plan directo. En temporada baja confirmen apertura.", items:[
+  ["America Hotel & Playa","Frente al mar","Muy cerca de la playa."],
+  ["Confiar Hotel Boutique","Boutique","Opción más cuidada y tranquila."],
+  ["Hotel España","Centro","Clásico del balneario."],
+  ["Appart Arcos","Apart","Práctico si quieren cocina."]
+ ]},
+ {p:"Bahía Blanca", note:"1 noche de paso: elijan algo con estacionamiento cerca de la salida a la RN 3.", items:[]}
+];
+
+const COMER = [
+ {p:"Puerto Madryn", note:"Mariscos del golfo y cordero patagónico.", items:[
+  ["Cantina El Náutico","Mariscos · clásico","Casa familiar con 50 años. Picada de mariscos para compartir. Reservar. Av. Roca 790."],
+  ["Náutico Bistró de Mar","Frente al mar","Arroces y mariscos. Mejor al mediodía: en temporada se ven ballenas desde la mesa. Bv. Brown 860."],
+  ["Mariscos del Atlántico","Pesca del día","Local chico cerca del muelle Piedrabuena. Picada de mar, vieiras, abadejo. Reservar."],
+  ["Chona","Cordero patagónico","Ambiente cálido, en el centro."],
+  ["Matilde","Cordero a la brasa","El recomendado por los locales para cordero."],
+  ["El Almendro","Cocina de mar","Platos de autor con mariscos de la zona. Alvear 409."],
+  ["Coral Resto","En la playa","Por la ubicación: café o almuerzo liviano sobre la arena."],
+  ["Casas de té galés en Gaiman","Merienda","Plas y Coed o Ty Gwyn: té con torta negra galesa."]
+ ]},
+ {p:"Las Grutas", note:"Pulpitos, mariscos y pescado del golfo. Fuera de temporada abren menos días.", items:[
+  ["El Rey del Marisco","Mariscos","Av. Río Negro 856.","5492920629017"],
+  ["Aladdín","Clásico del centro","Río Negro y Ramos Mejía.","5492920623117"],
+  ["La Nueva Rinconada","Casero","Curru Leuvu 1055."],
+  ["Bariloche","Restaurante","Bariloche 541.","542934497110"],
+  ["Buona Massa","Pastas y pizzas","Viedma 966."]
+ ]},
+ {p:"Viedma", note:"La costanera sobre el río Negro concentra lo mejor.", items:[
+  ["Achavil del Río","Costanera · mariscos","Vista al río, platos abundantes y gran carta de vinos. Villarino 207."],
+  ["Joaquín","Cocina de autor","Solo por la noche. Roca 466."],
+  ["La Balsa","Costanera","Villarino 55."],
+  ["Sahara","Restaurante","Muy buena atención. Saavedra 336."],
+  ["Roma Cervecería","Cervecería","Para algo informal. Villarino 36."],
+  ["Al Reparo (El Cóndor)","Parador","Si paran en El Cóndor al terminar la RP 1. Costanera, calle 20."]
+ ]},
+ {p:"Monte Hermoso", note:"En octubre abren menos locales: llamen antes.", items:[
+  ["La Estación","Frente al mar","Mariscos, pastas y cocina española. Buenas vistas."],
+  ["La Alemana","Pescados","Pescados y mariscos, también cocina alemana. Av. Argentina 129."],
+  ["Nonino","Restaurante","Peatonal Dorrego y Fossatti."],
+  ["Vía Appia","Dulce","Para el postre o la merienda."]
+ ]}
+];
+
+const CHECK = [
+ "Reservar hotel en Bahía Blanca (29/09)",
+ "Reservar hotel en Puerto Madryn (30/09 al 4/10, 4 noches)",
+ "Reservar avistaje embarcado en Puerto Pirámides (1/10, con revancha el 3/10)",
+ "Reservar mesa en Cantina El Náutico",
+ "Confirmar apertura y reservar hotel en Las Grutas (4 al 8/10, 4 noches)",
+ "Reservar hotel en Viedma (8/10), solo si van por la RP 1",
+ "Confirmar apertura y reservar hotel en Monte Hermoso (9/10, y también el 8/10 si van por el plan directo)",
+ "Descargar mapas offline de Google Maps de Chubut y la costa de Río Negro",
+ "Service del auto: neumáticos, auxilio, aceite y frenos",
+ "Kit de ruta: bidón de agua, linterna, cargador 12 V, botiquín",
+ "Efectivo para peajes, entradas de áreas protegidas y lugares sin posnet",
+ "Consultar estado de la RP 1 antes del 8/10",
+ "Decidir el tramo final el 7/10, mirando el pronóstico",
+ "Rompevientos, abrigo, gorro y protector solar"
+];
+
+/* ---------- Clima en vivo (solo si la página corre en un dominio propio) ----------
+   En el artifact el marco bloquea las llamadas externas y esto falla en silencio:
+   ahí siguen valiendo los datos que deja la tarea programada en datos.js. */
+const COORD = {
+  "bahia-blanca":[-38.72,-62.27], "puerto-madryn":[-42.77,-65.04], "puerto-piramides":[-42.57,-64.28],
+  "trelew":[-43.25,-65.31], "las-grutas":[-40.80,-65.08], "playas-doradas":[-41.63,-65.02],
+  "san-antonio-oeste":[-40.73,-64.95], "san-antonio-este":[-40.81,-64.87], "el-condor":[-41.05,-62.82],
+  "viedma":[-40.81,-63.00], "monte-hermoso":[-38.98,-61.30]
+};
+const WMO = {0:"Despejado",1:"Mayormente despejado",2:"Parcialmente nublado",3:"Nublado",
+  45:"Niebla",48:"Niebla con escarcha",51:"Llovizna leve",53:"Llovizna",55:"Llovizna intensa",
+  56:"Llovizna helada",57:"Llovizna helada intensa",61:"Lluvia leve",63:"Lluvia",65:"Lluvia intensa",
+  66:"Lluvia helada",67:"Lluvia helada intensa",71:"Nevada leve",73:"Nevada",75:"Nevada intensa",
+  77:"Granos de nieve",80:"Chaparrones leves",81:"Chaparrones",82:"Chaparrones fuertes",
+  85:"Chaparrones de nieve",86:"Nevadas fuertes",95:"Tormenta",96:"Tormenta con granizo",99:"Tormenta con granizo"};
+const ROSA = ["Norte","Noreste","Este","Sureste","Sur","Suroeste","Oeste","Noroeste"];
+
+async function cargarClimaEnVivo(){
+  const claves = Object.keys(COORD);
+  const lat = claves.map(k => COORD[k][0]).join(",");
+  const lon = claves.map(k => COORD[k][1]).join(",");
+  const url = "https://api.open-meteo.com/v1/forecast?latitude="+lat+"&longitude="+lon+
+    "&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max," +
+    "wind_speed_10m_max,wind_direction_10m_dominant&timezone=America%2FArgentina%2FBuenos_Aires&forecast_days=16";
+  const r = await fetch(url, {mode:"cors"});
+  if (!r.ok) throw new Error("HTTP "+r.status);
+  let js = await r.json();
+  if (!Array.isArray(js)) js = [js];
+  js.forEach((bloque, idx) => {
+    const k = claves[idx], d = bloque && bloque.daily;
+    if (!k || !d || !d.time) return;
+    D.clima[k] = D.clima[k] || {};
+    d.time.forEach((f, j) => {
+      const wd = d.wind_direction_10m_dominant ? d.wind_direction_10m_dominant[j] : null;
+      D.clima[k][f] = {
+        d: WMO[d.weather_code[j]] || "Sin datos",
+        max: Math.round(d.temperature_2m_max[j]),
+        min: Math.round(d.temperature_2m_min[j]),
+        v: String(Math.round(d.wind_speed_10m_max[j])),
+        vd: (wd == null) ? undefined : ROSA[Math.round(wd/45) % 8],
+        p: (d.precipitation_probability_max && d.precipitation_probability_max[j] != null)
+             ? d.precipitation_probability_max[j] + " %" : undefined
+      };
+    });
+  });
+  D.actualizado = new Date().toISOString();
+  D.envivo = true;
+  D.vivoAt = new Date();
+}
+
+/* Vuelve a leer datos.js del propio sitio, sin recargar la página */
+function mezclar(dst, src){
+  for (const k in src){ dst[k] = Object.assign({}, dst[k] || {}, src[k]); }
+}
+function recargarArchivo(){
+  return new Promise((res, rej) => {
+    const sc = document.createElement("script");
+    sc.src = "datos.js?t=" + Date.now();
+    sc.onload = () => {
+      const nuevo = window.DATOS;
+      if (nuevo && nuevo !== D){
+        mezclar(D.clima, nuevo.clima || {});
+        mezclar(D.mareas, nuevo.mareas || {});
+        if (nuevo.actualizado) D.archivo = nuevo.actualizado;
+        if (nuevo.nota) D.nota = nuevo.nota;
+      }
+      window.DATOS = D;
+      sc.remove(); res();
+    };
+    sc.onerror = () => { sc.remove(); rej(new Error("datos.js")); };
+    document.head.appendChild(sc);
+  });
+}
+
+/* ---------- Utilidades ---------- */
+const $ = s => document.querySelector(s);
+const WD = ["dom","lun","mar","mié","jue","vie","sáb"];
+const MO = ["ene","feb","mar","abr","may","jun","jul","ago","sep","oct","nov","dic"];
+const addDays = (d,n) => new Date(d.getFullYear(), d.getMonth(), d.getDate()+n);
+const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const iso = d => d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");
+const nfKm = n => n >= 100 ? Math.round(n) : (n >= 10 ? n.toFixed(0) : n.toFixed(1));
+const coma = n => String(n).replace(".", ",");
+
+function hav(a1,o1,a2,o2){
+  const R=6371, t=Math.PI/180;
+  const dLa=(a2-a1)*t, dLo=(o2-o1)*t;
+  const x=Math.sin(dLa/2)**2 + Math.cos(a1*t)*Math.cos(a2*t)*Math.sin(dLo/2)**2;
+  return 2*R*Math.asin(Math.min(1,Math.sqrt(x)));
+}
+
+/* Proyecta la posición sobre la ruta más cercana y estima el kilómetro */
+function ubicarEnRuta(la,lo){
+  let mejor = null;
+  for (const [nombre, pts] of Object.entries(RUTAS)){
+    for (let i=0;i<pts.length-1;i++){
+      const a=pts[i], b=pts[i+1];
+      const kx = Math.cos(a.la*Math.PI/180);
+      const ax=a.lo*kx, ay=a.la, bx=b.lo*kx, by=b.la, px=lo*kx, py=la;
+      const dx=bx-ax, dy=by-ay;
+      const L=dx*dx+dy*dy;
+      let u = L ? ((px-ax)*dx + (py-ay)*dy)/L : 0;
+      u = Math.max(0, Math.min(1, u));
+      const qx=ax+u*dx, qy=ay+u*dy;
+      const d = hav(la, lo, qy, qx/kx);
+      if (!mejor || d < mejor.d) mejor = {d, ruta:nombre, km: a.km + u*(b.km-a.km), a, b};
+    }
+  }
+  return mejor;
+}
+
+function cercanos(la,lo){
+  return POIS.map(p => ({...p, dist: hav(la,lo,p.la,p.lo)})).sort((x,y)=>x.dist-y.dist);
+}
+
+function todayIndex(){
+  const n = new Date();
+  const t = new Date(n.getFullYear(), n.getMonth(), n.getDate());
+  return Math.round((t - START) / 86400000);
+}
+
+/* ---------- Clima ---------- */
+/* Si falta el dato de un lugar chico, se usa el de la estación cercana y se avisa. */
+const SUSTITUTO = {
+  "puerto-piramides":"puerto-madryn", "playas-doradas":"las-grutas",
+  "san-antonio-oeste":"las-grutas", "san-antonio-este":"las-grutas",
+  "el-condor":"viedma", "trelew":"puerto-madryn"
+};
+function climaDe(clave, fechaISO){
+  const c = D.clima && D.clima[clave];
+  if (c && c[fechaISO]) return c[fechaISO];
+  const alt = SUSTITUTO[clave];
+  const ca = alt && D.clima && D.clima[alt];
+  if (ca && ca[fechaISO]) return Object.assign({}, ca[fechaISO], {de: alt});
+  return null;
+}
+function cardClima(clave, fechaISO){
+  const c = climaDe(clave, fechaISO);
+  const nom = LUGARES[clave] || clave;
+  if (!c) return '<div class="c"><div><span class="lg">'+esc(nom)+'</span><span class="ds">Pronóstico todavía no disponible. Se actualiza cada mañana.</span></div><div class="tp">—</div></div>';
+  const viento = "Viento " + (c.vd ? esc(c.vd)+" " : "") + esc(c.v) + " km/h";
+  const origen = c.de ? '<br>Dato de '+esc(LUGARES[c.de]||c.de)+', la estación más cercana' : "";
+  const lluvia = c.p ? " · lluvia " + esc(c.p) : "";
+  return '<div class="c"><div><span class="lg">'+esc(nom)+'</span><span class="ds">'+esc(c.d)+
+    '<br>'+viento+lluvia+origen+'</span></div>'+
+    '<div class="tp">'+c.max+'°<small>mín '+c.min+'°</small></div></div>';
+}
+
+/* ---------- Mareas ---------- */
+function eventosMarea(clave, fecha){
+  const m = D.mareas && D.mareas[clave];
+  if (!m) return null;
+  const hoy = m[iso(fecha)];
+  if (!hoy) return null;
+  const arm = (f, lista) => (lista||[]).map(e => {
+    const [hh,mm] = e.h.split(":").map(Number);
+    return {...e, ts: new Date(f.getFullYear(), f.getMonth(), f.getDate(), hh, mm)};
+  });
+  return {
+    hoy: arm(fecha, hoy),
+    todos: arm(addDays(fecha,-1), m[iso(addDays(fecha,-1))])
+      .concat(arm(fecha, hoy), arm(addDays(fecha,1), m[iso(addDays(fecha,1))]))
+      .sort((a,b)=>a.ts-b.ts)
+  };
+}
+
+/* Interpolación cosenoidal entre extremos consecutivos */
+function alturaAhora(todos, ahora){
+  for (let i=0;i<todos.length-1;i++){
+    const a=todos[i], b=todos[i+1];
+    if (ahora >= a.ts && ahora <= b.ts){
+      const u = (ahora - a.ts)/(b.ts - a.ts);
+      const h = (a.m+b.m)/2 + (a.m-b.m)/2*Math.cos(Math.PI*u);
+      return {h, sube: b.m > a.m, prox: b};
+    }
+  }
+  return null;
+}
+
+function bloqueMarea(clave, fecha, titulo){
+  const nom = LUGARES[clave] || clave;
+  const ev = eventosMarea(clave, fecha);
+  let cuerpo;
+  if (!ev){
+    cuerpo = '<p class="pend">Todavía no hay tabla de marea para '+esc(nom)+' en esta fecha. Se actualiza cada mañana.</p>';
+  } else {
+    const hoyIdx = todayIndex();
+    const esHoy = Math.round((new Date(fecha.getFullYear(),fecha.getMonth(),fecha.getDate()) - START)/86400000) === hoyIdx;
+    let ahoraHtml = "";
+    if (esHoy){
+      const a = alturaAhora(ev.todos, new Date());
+      if (a) ahoraHtml = '<div class="ahora">'+coma(a.h.toFixed(1))+' m <span>ahora, '+(a.sube?"subiendo":"bajando")+
+        ' · '+(a.prox.t==="pleamar"?"pleamar":"bajamar")+' '+esc(a.prox.h)+'</span></div>';
+    }
+    const items = ev.hoy.map(e => '<li class="'+(e.t==="pleamar"?"alta":"")+'"><span class="tt">'+
+      (e.t==="pleamar"?"pleamar":"bajamar")+'</span><span class="hh">'+esc(e.h)+'</span><span class="mm">'+coma(e.m.toFixed(1))+' m</span></li>').join("");
+    const fte = D.fuentes && D.fuentes[clave];
+    const pie = fte ? '<p class="small" style="margin:9px 0 0">'+esc(fte)+'</p>' : "";
+    cuerpo = ahoraHtml + '<ul class="mtabla">'+items+'</ul>' + pie;
+  }
+  return '<div class="panel marea"><h3>'+esc(titulo||("Marea en "+nom))+'</h3>'+cuerpo+'</div>';
+}
+
+/* ---------- Estado / encabezado ---------- */
+function renderStatus(){
+  const i = todayIndex();
+  let html;
+  if (i < 0){ const n=-i; html = 'Faltan <strong>'+n+' '+(n===1?"día":"días")+'</strong> para salir. Revisá la pestaña Preparar.'; }
+  else if (i < DAYS.length){ html = 'Día <strong>'+(i+1)+' de '+DAYS.length+'</strong> · '+esc(diaDe(i).t); }
+  else { html = 'Viaje terminado. ¡Bienvenidos a casa!'; }
+  $("#status").innerHTML = html;
+}
+
+/* ---------- Pestaña Ahora ---------- */
+let geoId = null, ultimaPos = null, historial = [], geoDiag = "";
+
+/* ¿Estamos embebidos dentro de otra app o página? Ahí el navegador suele bloquear el GPS. */
+function enMarco(){ try { return window.self !== window.top; } catch(e){ return true; } }
+
+/* Kilómetro de ruta declarado en cada punto, si lo tiene */
+const RE_KM = /^(RN 3|RP 1|RP 2|RP 5|RP 78)\s+km\s+(\d+)/;
+POIS.forEach(p => { const m = RE_KM.exec(p.r || ""); if (m){ p.ru = m[1]; p.pk = +m[2]; } });
+const NOMBRE_RUTA = {"RN 3":"RN 3","RP 1":"RP 1 (Camino de la Costa)","RP 2":"RP 2 (Península Valdés)",
+  "RP 5":"RP 5 (a Playas Doradas)","RP 78":"RP 78 (a Monte Hermoso)"};
+/* [sentido km decreciente, sentido km creciente] */
+const EXTREMOS = {
+  "RN 3": ["hacia el norte", "hacia el sur"],
+  "RP 1 (Camino de la Costa)": ["hacia Viedma", "hacia San Antonio Este"],
+  "RP 2 (Península Valdés)": ["hacia Puerto Madryn", "hacia Pirámides"],
+  "RP 5 (a Playas Doradas)": ["hacia Sierra Grande", "hacia Playas Doradas"],
+  "RP 78 (a Monte Hermoso)": ["hacia Coronel Dorrego", "hacia Monte Hermoso"]
+};
+
+/* Coordenadas aproximadas de un kilómetro de ruta, interpolando la traza */
+function coordDeKm(rutaNombre, km){
+  const pts = RUTAS[rutaNombre];
+  if (!pts) return null;
+  const lim = Math.max(pts[0].km, Math.min(pts[pts.length-1].km, km));
+  for (let i=0;i<pts.length-1;i++){
+    const a=pts[i], b=pts[i+1];
+    if (lim >= a.km && lim <= b.km){
+      const u = (b.km === a.km) ? 0 : (lim - a.km)/(b.km - a.km);
+      return {la: a.la + u*(b.la-a.la), lo: a.lo + u*(b.lo-a.lo)};
+    }
+  }
+  return {la: pts[0].la, lo: pts[0].lo};
+}
+
+/* Sentido de marcha con GPS: +1 si el km crece, -1 si baja, 0 si no se sabe */
+function sentido(rutaNombre, kmActual){
+  historial = historial.filter(h => Date.now() - h.t < 15*60*1000 && h.ruta === rutaNombre);
+  const prev = historial.find(h => Math.abs(h.km - kmActual) > 1.5);
+  if (!prev) return 0;
+  return kmActual > prev.km ? 1 : -1;
+}
+
+/* Próxima estación de servicio en el sentido en que vamos */
+function proximaNafta(rutaNombre, kmActual, dirn){
+  if (!dirn) return null;
+  const corto = Object.keys(NOMBRE_RUTA).find(k => NOMBRE_RUTA[k] === rutaNombre);
+  const cands = POIS.filter(p => p.t === "nafta" && p.ru === corto &&
+    (dirn > 0 ? p.pk > kmActual + 0.5 : p.pk < kmActual - 0.5));
+  if (!cands.length) return null;
+  cands.sort((a,b) => Math.abs(a.pk - kmActual) - Math.abs(b.pk - kmActual));
+  return {poi: cands[0], km: Math.abs(cands[0].pk - kmActual)};
+}
+
+/* Posición cargada a mano, como respaldo del GPS */
+function manualGet(){
+  try { const v = JSON.parse(store.get("manual") || "null");
+    return (v && RUTAS[v.ruta] && isFinite(v.km)) ? v : null; } catch(e){ return null; }
+}
+function manualSet(v){ store.set("manual", JSON.stringify(v)); }
+
+/* De dónde sale la posición: GPS si hay, si no la cargada a mano */
+function posicionActual(){
+  if (ultimaPos){
+    const u = ubicarEnRuta(ultimaPos.la, ultimaPos.lo);
+    return {fuente:"gps", la:ultimaPos.la, lo:ultimaPos.lo, acc:ultimaPos.acc, vel:ultimaPos.vel,
+            ruta:u.ruta, km:u.km, d:u.d, a:u.a, b:u.b, dir: sentido(u.ruta, u.km)};
+  }
+  const m = manualGet();
+  if (m){
+    const c = coordDeKm(m.ruta, m.km);
+    return {fuente:"manual", la:c.la, lo:c.lo, ruta:m.ruta, km:m.km, d:0, dir:m.dir||0};
+  }
+  return null;
+}
+
+function renderAhora(){
+  const i = todayIndex();
+  const hoy = new Date();
+  const dia = (i>=0 && i<DAYS.length) ? diaDe(i) : null;
+  const P = posicionActual();
+
+  /* --- Caja de posición --- */
+  let g;
+  if (!P){
+    g = '<div class="gps"><p class="rot">Ubicación</p><p class="pos">Sin ubicación</p>'+
+        '<p class="ent">Con el GPS activado la guía te muestra en qué ruta y kilómetro estás y qué tenés cerca. Si el navegador no lo permite, cargalo a mano acá abajo.</p>'+
+        '<p style="margin:12px 0 0"><button class="btn" id="btnGeo" type="button">Activar ubicación</button></p>'+
+        '<p class="small" id="geoMsg" style="margin-top:8px">'+esc(geoDiag)+'</p></div>';
+  } else {
+    const lejos = P.fuente === "gps" && P.d > 12;
+    const pos = lejos ? "Fuera de ruta" : esc(P.ruta)+" km "+Math.round(P.km);
+    let entre;
+    if (P.fuente === "manual"){
+      entre = 'Posición cargada a mano'+(P.dir ? ', '+esc(EXTREMOS[P.ruta][P.dir>0?1:0]) : '')+'.';
+    } else if (lejos){
+      entre = 'A '+nfKm(P.d)+' km de la '+esc(P.ruta)+'. Precisión ±'+Math.round(P.acc||0)+' m.';
+    } else {
+      entre = 'Entre los puntos conocidos km '+P.a.km+' y km '+P.b.km+'. Kilómetro estimado, precisión ±'+Math.round(P.acc||0)+' m.';
+    }
+    let nafta = "";
+    if (!lejos){
+      const pn = proximaNafta(P.ruta, P.km, P.dir);
+      if (pn) nafta = '<p class="ent" style="margin-top:8px"><b>Próxima nafta en el sentido de marcha:</b> '+
+        esc(pn.poi.n)+', a '+nfKm(pn.km)+' km por ruta.</p>';
+      else if (P.dir) nafta = '<p class="ent" style="margin-top:8px"><b>No hay más estaciones adelante sobre esta ruta.</b> Mirá la lista de abajo.</p>';
+      if (P.fuente === "gps"){ historial.unshift({t:Date.now(), ruta:P.ruta, km:P.km}); historial = historial.slice(0,40); }
+    }
+    const v = (P.fuente==="gps" && P.vel!=null && P.vel>1) ? '<span class="vel">'+Math.round(P.vel*3.6)+' km/h</span>' : '';
+    const et = P.fuente === "manual" ? "Posición cargada a mano" : "Ubicación en vivo";
+    g = '<div class="gps on"><p class="rot">'+et+'</p><p class="pos">'+pos+'</p>'+
+        '<p class="ent">'+entre+'</p>'+nafta+v+
+        '<p style="margin:12px 0 0"><button class="btn sec" id="btnCambiar" type="button">Cambiar posición</button></p></div>';
+  }
+  $("#gpsBox").innerHTML = g;
+  const bg = $("#btnGeo"); if (bg) bg.addEventListener("click", pedirGeo);
+  const bc = $("#btnCambiar"); if (bc) bc.addEventListener("click", () => { ultimaPos = null; store.set("manual",""); renderAhora(); });
+
+  /* --- Carga manual --- */
+  if (!P || P.fuente === "manual"){
+    const m = manualGet() || {ruta:"RN 3", km:"", dir:1};
+    const ops = Object.keys(RUTAS).map(r => '<option value="'+esc(r)+'"'+(r===m.ruta?" selected":"")+'>'+esc(r)+'</option>').join("");
+    const dirs = [1,-1].map(d => '<button type="button" class="dirb'+(m.dir===d?" act":"")+'" data-d="'+d+'">'+
+      esc(EXTREMOS[m.ruta][d>0?1:0])+'</button>').join("");
+    $("#manualBox").innerHTML = '<div class="panel"><h3>Cargar la posición a mano</h3>'+
+      '<p class="small" style="margin:0 0 10px">La RN 3 y las rutas provinciales tienen carteles con el kilómetro. Cargalo acá y el resto de la guía funciona igual que con GPS.</p>'+
+      '<div class="mform"><select id="mRuta" aria-label="Ruta">'+ops+'</select>'+
+      '<input id="mKm" type="number" inputmode="numeric" placeholder="km" value="'+(m.km!==""?m.km:"")+'" aria-label="Kilómetro"></div>'+
+      '<div class="dirs" id="mDir">'+dirs+'</div>'+
+      '<p style="margin:12px 0 0"><button class="btn" id="mOk" type="button">Usar esta posición</button></p></div>';
+    let dsel = m.dir;
+    $("#mDir").querySelectorAll(".dirb").forEach(b => b.addEventListener("click", () => {
+      dsel = +b.dataset.d;
+      $("#mDir").querySelectorAll(".dirb").forEach(x => x.classList.toggle("act", +x.dataset.d === dsel));
+    }));
+    $("#mRuta").addEventListener("change", () => {
+      const r = $("#mRuta").value;
+      $("#mDir").querySelectorAll(".dirb").forEach(x => { x.textContent = EXTREMOS[r][+x.dataset.d>0?1:0]; });
+    });
+    $("#mOk").addEventListener("click", () => {
+      const km = parseFloat($("#mKm").value);
+      if (!isFinite(km)){ $("#mKm").focus(); return; }
+      manualSet({ruta: $("#mRuta").value, km: km, dir: dsel});
+      ultimaPos = null; renderAhora();
+    });
+  } else {
+    $("#manualBox").innerHTML = "";
+  }
+
+  /* --- Puntos cercanos --- */
+  if (P){
+    const cs = cercanos(P.la, P.lo);
+    const pick = (t,n,max) => cs.filter(p=>p.t===t && (max==null || p.dist<=max)).slice(0,n);
+    const sel = pick("nafta",3).concat(pick("salud",1), pick("interes",3,120), pick("pueblo",1,120))
+      .sort((a,b)=>a.dist-b.dist);
+    const ic = {nafta:"⛽", salud:"🏥", policia:"🚓", interes:"📍", pueblo:"🏘"};
+    const filas = sel.map(p => '<li><span class="ic">'+ic[p.t]+'</span>'+
+      '<span><span class="nm">'+esc(p.n)+'</span><span class="sb">'+esc(p.r||"")+(p.d?" · "+esc(p.d):"")+'</span></span>'+
+      '<span class="km">'+nfKm(p.dist)+' km</span></li>').join("");
+    $("#cercaBox").innerHTML = '<div class="panel"><h3>Lo que tenés cerca</h3><ul class="cerca">'+filas+
+      '</ul><p class="small" style="margin-top:10px">Distancias en línea recta, no por camino.</p></div>';
+  } else {
+    $("#cercaBox").innerHTML = "";
+  }
+
+  /* --- Clima y marea --- */
+  if (dia){
+    $("#climaHoy").innerHTML = '<div class="panel"><h3>Pronóstico de hoy</h3><div class="clima">'+
+      dia.cl.map(k => cardClima(k, iso(hoy))).join("")+'</div></div>';
+    $("#mareaHoy").innerHTML = dia.ma ? bloqueMarea(dia.ma, hoy) : "";
+  } else {
+    const ri = i < 0 ? 0 : DAYS.length - 1;
+    const rd = diaDe(ri), rf = addDays(START, ri);
+    const titulo = i < 0
+      ? "Pronóstico del día 1 · " + WD[rf.getDay()] + " " + rf.getDate() + " de " + MO[rf.getMonth()]
+      : "Último día del viaje";
+    $("#climaHoy").innerHTML = '<div class="panel"><h3>'+esc(titulo)+'</h3><div class="clima">'+
+      rd.cl.map(k => cardClima(k, iso(rf))).join("")+'</div></div>';
+    let mh = "";
+    for (let j = ri; j < DAYS.length; j++){
+      const f = addDays(START, j);
+      const dj = diaDe(j);
+      if (dj.ma && eventosMarea(dj.ma, f)){
+        mh = bloqueMarea(dj.ma, f, "Próxima marea cargada · " + (LUGARES[dj.ma]||dj.ma) +
+             ", " + f.getDate() + " de " + MO[f.getMonth()]);
+        break;
+      }
+    }
+    $("#mareaHoy").innerHTML = mh;
+  }
+  renderDatos();
+}
+
+function diag(txt){ geoDiag = txt; const m = $("#geoMsg"); if (m) m.textContent = txt; }
+
+function pedirGeo(){
+  if (!navigator.geolocation){
+    diag("Este navegador no ofrece la API de ubicación. Usá la carga manual.");
+    return;
+  }
+  diag("Buscando señal…");
+  const marco = enMarco() ? " La guía está embebida dentro de otra página, que es la causa más habitual." : "";
+  try {
+    geoId = navigator.geolocation.watchPosition(
+      p => {
+        ultimaPos = {la:p.coords.latitude, lo:p.coords.longitude, vel:p.coords.speed, acc:p.coords.accuracy};
+        geoDiag = ""; renderAhora();
+      },
+      e => {
+        if (e.code === 1) diag("Permiso de ubicación denegado (código 1)."+marco+" Usá la carga manual de acá abajo.");
+        else if (e.code === 2) diag("El navegador no pudo determinar la posición (código 2)."+marco+" Usá la carga manual.");
+        else diag("Se agotó el tiempo de espera del GPS (código 3). Probá al aire libre o usá la carga manual.");
+      },
+      {enableHighAccuracy:true, maximumAge:10000, timeout:20000}
+    );
+  } catch(err){
+    diag("No se pudo iniciar la ubicación: "+(err && err.message ? err.message : "error desconocido")+". Usá la carga manual.");
+  }
+}
+
+/* ---------- Verificación de mareas contra el SHN ----------
+   mareasargentinas.com.ar publica la serie del Servicio de Hidrografía Naval
+   cada 15 minutos. Si el navegador permite la consulta desde esta página,
+   recalculamos pleamares y bajamares y los comparamos con los que están cargados. */
+const PUERTO_SHN = {
+  "puerto-piramides":"MADR", "puerto-madryn":"MADR", "playas-doradas":"PCOL",
+  "las-grutas":"SANT", "san-antonio-este":"SANT", "el-condor":"RION", "monte-hermoso":"MHER"
+};
+const SHN_URL = "https://www.mareasargentinas.com.ar/Mareas.php";
+
+/* Qué fechas necesita cada playa, contando los dos planes y el día anterior y posterior */
+function mareasNecesarias(){
+  const req = {};
+  const add = (k,f) => { (req[k] = req[k] || new Set()).add(iso(f)); };
+  for (let i=0;i<DAYS.length;i++){
+    [DAYS[i], PLAN_B[i]].forEach(d => {
+      if (!d || !d.ma) return;
+      const f = addDays(START,i);
+      add(d.ma, addDays(f,-1)); add(d.ma, f); add(d.ma, addDays(f,1));
+    });
+  }
+  return req;
+}
+
+/* Pleamares y bajamares a partir de la serie, descartando los bordes de la ventana */
+function extremosDeSerie(pts){
+  const ev = []; let dir = 0;
+  for (let i=1;i<pts.length;i++){
+    const d = Math.sign(pts[i].m - pts[i-1].m);
+    if (!d) continue;
+    if (dir && d !== dir) ev.push({ts:pts[i-1].ts, m:pts[i-1].m, t: dir>0 ? "pleamar" : "bajamar"});
+    dir = d;
+  }
+  if (!pts.length) return ev;
+  const ini = pts[0].ts.getTime() + 60*60*1000, fin = pts[pts.length-1].ts.getTime() - 60*60*1000;
+  return ev.filter(e => e.ts.getTime() >= ini && e.ts.getTime() <= fin);
+}
+
+function fechaSHN(f){
+  const dd = String(f.getDate()).padStart(2,"0"), mm = String(f.getMonth()+1).padStart(2,"0");
+  return mm+"-"+dd+"-"+f.getFullYear()+" 00:00:00";
+}
+
+async function traerSHN(puerto, desde, dias){
+  const u = SHN_URL+"?q=GetMarea&pPuerto="+encodeURIComponent(puerto)+
+            "&pDesde="+encodeURIComponent(fechaSHN(desde))+"&pDias="+dias;
+  const r = await fetch(u, {mode:"cors"});
+  if (!r.ok) throw new Error("HTTP "+r.status);
+  const js = await r.json();
+  if (!js || !js.success || !js.data || !js.data.Info) throw new Error("sin datos");
+  return Object.values(js.data.Info).map(x => ({
+    ts: new Date(String(x.Instante).replace(" ","T")),
+    m: Number(x.Marea)
+  })).filter(x => !isNaN(x.m) && !isNaN(x.ts.getTime())).sort((a,b)=>a.ts-b.ts);
+}
+
+const hhmm = d => String(d.getHours()).padStart(2,"0")+":"+String(d.getMinutes()).padStart(2,"0");
+
+/* Devuelve {ok, verificadas, cambios, detalle[]} */
+async function verificarMareas(){
+  const req = mareasNecesarias();
+  const porPuerto = {};
+  for (const [clave, set] of Object.entries(req)){
+    const pu = PUERTO_SHN[clave]; if (!pu) continue;
+    const fechas = [...set].sort();
+    porPuerto[pu] = porPuerto[pu] || {min:fechas[0], max:fechas[fechas.length-1], claves:[]};
+    if (fechas[0] < porPuerto[pu].min) porPuerto[pu].min = fechas[0];
+    if (fechas[fechas.length-1] > porPuerto[pu].max) porPuerto[pu].max = fechas[fechas.length-1];
+    porPuerto[pu].claves.push(clave);
+  }
+  let verificadas = 0, cambios = 0, agregadas = 0; const detalle = []; let alguno = false;
+  for (const [pu, info] of Object.entries(porPuerto)){
+    const d0 = new Date(info.min+"T00:00:00"), d1 = new Date(info.max+"T00:00:00");
+    const dias = Math.min(10, Math.round((d1-d0)/86400000) + 2);
+    let serie;
+    try { serie = await traerSHN(pu, addDays(d0,-1), dias+1); } catch(e){ continue; }
+    alguno = true;
+    const ext = extremosDeSerie(serie);
+    const porDia = {};
+    ext.forEach(e => { (porDia[iso(e.ts)] = porDia[iso(e.ts)] || []).push(e); });
+    for (const clave of info.claves){
+      for (const f of req[clave]){
+        const nuevos = porDia[f]; if (!nuevos || !nuevos.length) continue;
+        const arr = nuevos.map(e => ({t:e.t, h:hhmm(e.ts), m:Math.round(e.m*100)/100}));
+        const viejos = (D.mareas[clave] || {})[f];
+        verificadas++;
+        let igual = viejos && viejos.length === arr.length && viejos.every((v,i) => {
+          const a = arr[i];
+          const dm = Math.abs(Number(v.m) - a.m);
+          const [h1,m1] = v.h.split(":").map(Number), [h2,m2] = a.h.split(":").map(Number);
+          const dt = Math.abs((h1*60+m1) - (h2*60+m2));
+          return v.t === a.t && dm <= 0.1 && dt <= 20;
+        });
+        if (!igual){
+          const habia = !!viejos;
+          D.mareas[clave] = D.mareas[clave] || {};
+          D.mareas[clave][f] = arr;
+          if (habia){ cambios++; detalle.push((LUGARES[clave]||clave)+" "+f.slice(8)+"/"+f.slice(5,7)); }
+          else agregadas++;
+        }
+      }
+    }
+  }
+  return {ok:alguno, verificadas, cambios, agregadas, detalle};
+}
+
+/* ---------- Datos: frescura y actualización a demanda ---------- */
+let refrescando = false, ultimoResultado = null;
+
+function textoFrescura(){
+  if (D.envivo && D.vivoAt){
+    const f = D.vivoAt;
+    return "Pronóstico en vivo, traído a las " + String(f.getHours()).padStart(2,"0")+":"+
+           String(f.getMinutes()).padStart(2,"0") + ".";
+  }
+  const cuando = D.archivo || D.actualizado;
+  if (cuando){
+    const f = new Date(cuando);
+    return "Pronóstico del archivo, guardado el " + f.getDate() + " de " + MO[f.getMonth()] +
+           " a las " + String(f.getHours()).padStart(2,"0")+":"+String(f.getMinutes()).padStart(2,"0") + ".";
+  }
+  return "Todavía sin datos de pronóstico.";
+}
+
+function bloqueDatos(){
+  const res = ultimoResultado
+    ? '<p class="res'+(ultimoResultado.ok?"":" mal")+'">'+esc(ultimoResultado.txt)+'</p>' : "";
+  return '<div class="datosbox"><h3>Datos del viaje</h3>'+
+    '<p class="small">'+esc(textoFrescura())+
+    ' Las mareas son del Servicio de Hidrografía Naval y ya están cargadas para todo el viaje: no necesitan actualizarse.</p>'+
+    '<button class="btn dbtn" type="button"'+(refrescando?" disabled":"")+'>'+
+      (refrescando?"Actualizando…":"Actualizar datos")+'</button>'+res+'</div>';
+}
+
+function renderDatos(){
+  ["#datosBox","#selloBox"].forEach(sel => {
+    const el = $(sel); if (!el) return;
+    el.innerHTML = bloqueDatos();
+    const b = el.querySelector(".dbtn");
+    if (b) b.addEventListener("click", refrescarDatos);
+  });
+}
+
+async function refrescarDatos(){
+  if (refrescando) return;
+  refrescando = true; ultimoResultado = null; renderDatos();
+  let archivo = false, vivo = false, mar = null;
+  try { await recargarArchivo(); archivo = true; } catch(e){}
+  try { await cargarClimaEnVivo(); vivo = true; } catch(e){}
+  try { mar = await verificarMareas(); } catch(e){}
+  refrescando = false;
+
+  let clima;
+  if (vivo) clima = "Pronóstico actualizado en vivo.";
+  else if (archivo) clima = "Archivo releído. El pronóstico en vivo no está disponible acá: dentro del artifact las llamadas externas están bloqueadas.";
+  else clima = "No se pudo actualizar el pronóstico. Si tenés señal, probá recargando la página entera.";
+
+  let mareas;
+  if (mar && mar.ok){
+    const partes = ["Mareas: " + mar.verificadas + " días verificados contra el SHN"];
+    if (mar.cambios) partes.push("cambiaron " + mar.cambios + " (" + mar.detalle.slice(0,3).join(", ") +
+      (mar.detalle.length>3 ? " y más" : "") + ") y ya están corregidos");
+    if (mar.agregadas) partes.push("se completaron " + mar.agregadas + " días que faltaban");
+    if (!mar.cambios && !mar.agregadas) partes.push("sin cambios");
+    mareas = partes.join(", ") + ".";
+  } else {
+    mareas = "Mareas: no se pudieron verificar contra el SHN desde acá, el navegador bloquea la consulta. Las que están cargadas siguen valiendo.";
+  }
+
+  ultimoResultado = {ok: vivo || archivo, txt: clima + " " + mareas};
+  renderStatus(); renderDays(); renderAhora();
+}
+
+/* ---------- Días ---------- */
+function renderPlan(){
+  const pa = planActual();
+  $("#planBox").innerHTML = '<div class="planbox"><h3>Tramo final · 8 y 9 de octubre</h3>'+
+    '<div class="seg2">'+
+      '<button type="button" data-p="costa" aria-pressed="'+(pa==="costa")+'">Por la costa (RP 1)</button>'+
+      '<button type="button" data-p="directo" aria-pressed="'+(pa==="directo")+'">Directo a Monte Hermoso</button>'+
+    '</div><p class="small">'+(pa==="costa"
+      ? "El 8 hacen el Camino de la Costa con Bahía Creek y duermen en Viedma; el 9 viajan a Monte Hermoso. Con este plan no entra Pehuen Có."
+      : "Plan para mal tiempo: el 8 van derecho de Las Grutas a Monte Hermoso, todo asfalto, y el 9 queda libre para Pehuen Có. Se pierden la RP 1 y Bahía Creek.")+
+    '</p></div>';
+  $("#planBox").querySelectorAll("button").forEach(b => b.addEventListener("click", () => {
+    store.set("plan", b.dataset.p); renderStatus(); renderDays(); renderAhora();
+  }));
+}
+
+function renderDays(){
+  renderPlan();
+  const ti = todayIndex();
+  $("#days").innerHTML = DAYS.map((_, i) => { const d = diaDe(i);
+    const date = addDays(START,i);
+    const isToday = i === ti;
+    const abierto = isToday || (ti < 0 && i === 0);
+    const acts = d.acts.map((a,j) => {
+      const id = "d"+i+"a"+j; const done = store.get(id) === "1";
+      return '<li class="'+(done?"done":"")+'"><input type="checkbox" id="'+id+'" '+(done?"checked":"")+'>'+
+        '<label for="'+id+'"><span class="t">'+esc(a[0])+'</span><span class="d">'+esc(a[1])+'</span></label></li>';
+    }).join("");
+    const tip = d.tip ? '<p class="tip '+d.tip[0]+'">'+esc(d.tip[1])+'</p>' : "";
+    const rsm = d.cl.map(k => { const c = climaDe(k, iso(date));
+      return c ? (LUGARES[k]||k)+" "+c.max+"°/"+c.min+"°" : null; }).filter(Boolean).join(" · ");
+    const resumen = rsm ? '<span class="meta wx">'+esc(rsm)+'</span>' : '';
+    const links = d.links.map(l => '<a class="chip" href="'+l[1]+'" target="_blank" rel="noopener">'+esc(l[0])+'</a>').join("");
+    const pron = d.cl.map(k => {
+      const c = climaDe(k, iso(date));
+      return '<span>'+esc(LUGARES[k]||k)+': '+(c ? c.max+"° / "+c.min+"° · "+esc(c.d.toLowerCase()) : "pronóstico pendiente")+'</span>';
+    }).join("");
+    const marea = d.ma ? bloqueMarea(d.ma, date) : "";
+    return '<article class="day '+(isToday?"today ":"")+(abierto?"open":"")+'" id="day'+i+'">'+
+      '<button type="button" aria-expanded="'+abierto+'" aria-controls="b'+i+'">'+
+        '<span class="datebox"><span class="dw">'+WD[date.getDay()]+'</span><span class="dn">'+date.getDate()+'</span><span class="dm">'+MO[date.getMonth()]+'</span></span>'+
+        '<span><h3>'+esc(d.t)+'</h3><span class="meta">Día '+(i+1)+' · '+esc(d.base)+'</span>'+resumen+'</span>'+
+        '<svg class="chev" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>'+
+      '</button>'+
+      '<div class="body" id="b'+i+'">'+
+        '<div class="drive"><span><b>'+esc(d.drive.km)+'</b></span><span><b>'+esc(d.drive.h)+'</b></span><span>'+esc(d.drive.r)+'</span></div>'+
+        '<div class="minipron">'+pron+'</div>'+
+        '<ul class="acts">'+acts+'</ul>'+tip+marea+'<div class="links">'+links+'</div>'+
+      '</div></article>';
+  }).join("");
+
+  document.querySelectorAll(".day>button").forEach(b => b.addEventListener("click", () => {
+    const art = b.parentElement; const open = art.classList.toggle("open");
+    b.setAttribute("aria-expanded", open);
+  }));
+  document.querySelectorAll(".acts input").forEach(c => c.addEventListener("change", () => {
+    store.set(c.id, c.checked ? "1" : "0"); c.closest("li").classList.toggle("done", c.checked);
+  }));
+  if (ti >= 0 && ti < DAYS.length){
+    const el = document.getElementById("day"+ti);
+    if (el) setTimeout(() => el.scrollIntoView({block:"start"}), 50);
+  }
+  renderDatos();
+}
+
+/* ---------- Nafta y ruta ---------- */
+function renderLegs(){
+  $("#legs").innerHTML = TRAMOS.map(l => {
+    const stops = l.p.map(p => {
+      const partes = [];
+      if (!p[2]) partes.push("Sin combustible");
+      if (p[3]) partes.push(esc(p[3]));
+      const sub = partes.length ? '<span class="dt">'+partes.join(" · ")+'</span>' : "";
+      return '<li class="'+(p[2]?"":"sinnafta")+'">'+
+        '<span class="nm">'+esc(p[0])+'</span> <span class="kmr">'+esc(p[1])+'</span>'+sub+'</li>';
+    }).join("");
+    const gaps = l.g.map(g => '<p class="gap"><b>'+esc(g[0])+'</b><br>'+esc(g[1])+'</p>').join("");
+    return '<div class="leg"><h3>'+esc(l.t)+'</h3><p class="lsub">'+esc(l.s)+'</p>'+gaps+
+      '<ul class="stops">'+stops+'</ul></div>';
+  }).join("") + '<p class="small">El punto lleno marca localidad con estación de servicio; el punto gris, lugares sin combustible. Es una lista a nivel de localidad: en cada pueblo marcado hay al menos una estación, pero los horarios y el stock pueden variar. En temporada baja conviene no bajar de medio tanque.</p>';
+}
+
+/* ---------- Lugares ---------- */
+let tipoActual = "Dormir", lugarActual = "Todos";
+function renderLugares(){
+  const data = tipoActual === "Dormir" ? DORMIR : COMER;
+  const places = data.map(x => x.p);
+  $("#segTipo").innerHTML = ["Dormir","Comer"].map(t =>
+    '<button type="button" aria-pressed="'+(t===tipoActual)+'">'+t+'</button>').join("");
+  $("#segTipo").querySelectorAll("button").forEach(b => b.addEventListener("click", () => {
+    tipoActual = b.textContent; lugarActual = "Todos"; renderLugares();
+  }));
+  $("#segLugar").innerHTML = ["Todos", ...places].map(p =>
+    '<button type="button" aria-pressed="'+(p===lugarActual)+'">'+esc(p)+'</button>').join("");
+  $("#segLugar").querySelectorAll("button").forEach(b => b.addEventListener("click", () => {
+    lugarActual = b.textContent; renderLugares();
+  }));
+  $("#lugares").innerHTML = data.filter(x => lugarActual==="Todos" || x.p===lugarActual).map(x => {
+    const items = x.items.map(it => {
+      const tel = it[3] ? '<a class="chip" href="tel:+'+it[3].replace(/^0/,"54")+'">Llamar</a>' : "";
+      const dest = it[0].includes("(El Cóndor)") ? it[0] : it[0]+", "+x.p;
+      return '<div class="item"><span class="k">'+esc(it[1])+'</span><div class="n">'+esc(it[0])+'</div><p>'+esc(it[2])+'</p>'+
+        '<div class="links"><a class="chip" href="'+q(dest)+'" target="_blank" rel="noopener">Ver en mapa</a>'+tel+'</div></div>';
+    }).join("");
+    return '<div class="place-block"><h3>'+esc(x.p)+'</h3><p class="place-note">'+esc(x.note)+'</p>'+items+'</div>';
+  }).join("");
+}
+
+/* ---------- Preparar ---------- */
+function renderCheck(){
+  $("#check").innerHTML = CHECK.map((c,i) => {
+    const id = "c"+i; const done = store.get(id) === "1";
+    return '<li class="'+(done?"done":"")+'"><input type="checkbox" id="'+id+'" '+(done?"checked":"")+
+      '><label for="'+id+'"><span>'+esc(c)+'</span></label></li>';
+  }).join("");
+  const upd = () => { const n = document.querySelectorAll("#check input:checked").length; $("#bar").style.width = (n/CHECK.length*100)+"%"; };
+  document.querySelectorAll("#check input").forEach(c => c.addEventListener("change", () => {
+    store.set(c.id, c.checked ? "1":"0"); c.closest("li").classList.toggle("done", c.checked); upd();
+  }));
+  upd();
+}
+
+/* ---------- Navegación ---------- */
+function tabs(){
+  const btns = document.querySelectorAll("nav.tabs button");
+  const ir = v => {
+    btns.forEach(x => x.setAttribute("aria-selected", x.dataset.v===v));
+    document.querySelectorAll("section.view").forEach(s => s.classList.toggle("active", s.id===v));
+    store.set("tab", v); window.scrollTo({top:0});
+    if (v === "v-ahora") renderAhora();
+  };
+  btns.forEach(b => b.addEventListener("click", () => ir(b.dataset.v)));
+  const i = todayIndex();
+  const saved = store.get("tab");
+  ir(saved || ((i>=0 && i<DAYS.length) ? "v-ahora" : "v-dias"));
+}
+
+function theme(){
+  const root = document.documentElement; const saved = store.get("theme");
+  if (saved) root.setAttribute("data-theme", saved);
+  $("#themeBtn").addEventListener("click", () => {
+    const cur = root.getAttribute("data-theme") || (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+    const next = cur === "dark" ? "light" : "dark";
+    root.setAttribute("data-theme", next); store.set("theme", next);
+  });
+}
+
+theme(); renderStatus(); renderDays(); renderLegs(); renderLugares(); renderCheck(); renderAhora(); tabs();
+
+/* Si ya dieron permiso antes, arranca la ubicación sin tener que tocar nada */
+try {
+  if (navigator.permissions && navigator.permissions.query){
+    navigator.permissions.query({name:"geolocation"})
+      .then(r => { if (r.state === "granted") pedirGeo(); })
+      .catch(() => {});
+  }
+} catch(e) {}
+
+setInterval(() => { if ($("#v-ahora").classList.contains("active")) renderAhora(); }, 60000);
+
+/* Pronóstico en vivo. Si la página está embebida en el artifact esto falla y no pasa nada:
+   quedan los datos de la tarea programada. */
+cargarClimaEnVivo()
+  .then(() => { renderStatus(); renderDays(); renderAhora(); })
+  .catch(() => { renderDatos(); });
+</script>
+</body>
+</html>
